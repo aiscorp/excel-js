@@ -1,13 +1,11 @@
 1. SPA JS Excel' application:
 - webpack
-    -> babel
-    -> scss
+    -> babel +
+    -> scss +
     -> eslint
-    -> dev/prod modes
-        dev: dev server, sourceMaps, non minified code
-        prod: minified code
+    -> dev/prod modes +
+        dev: dev server, sourceMaps, non minified code +
+        prod: minified code +
 - git
     -> production version
     -> development version
-
-    ларгус 778 белый юнизу
