@@ -1,0 +1,24 @@
+{
+  "name": "excel-js",
+  "version": "1.0.0",
+  "description": "Excel app on pure JS (course by V.Minin)",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aiscorp/excel-js.git"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "excel"
+  ],
+  "author": "Ivan Alenin <aisproject@yandex.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aiscorp/excel-js/issues"
+  },
+  "homepage": "https://github.com/aiscorp/excel-js#readme"
+}
