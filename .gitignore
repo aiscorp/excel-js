@@ -3,3 +3,6 @@
 
 # Node Modules
 node_modules
+
+# Distr output
+distr
