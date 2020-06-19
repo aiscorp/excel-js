@@ -1,0 +1,16 @@
+$header-height: 34px;
+$border-color: #b0b0b0;
+
+$toolbar-height: 40px;
+
+$formula-height: 34px;
+$formula-top: $header-height + $toolbar-height;
+
+$info-cell-width: 40px;
+
+$table-top: $header-height + $toolbar-height + $formula-height;
+$row-height: 24px;
+
+$cell-width: 100px;
+$cell-color: #e0e0e0;
+$info-bg-color: #f8f9fa;
