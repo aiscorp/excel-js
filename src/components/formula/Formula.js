@@ -10,15 +10,19 @@ export class Formula extends ExcelComponent {
     })
   }
 
+  onInput() {
+    console.log(this)
+    console.log('Formula: onInput', event.target.textContent.trim())
+  }
+
+  onClick() {
+
+  }
+
   toHTML() {
     return `
       <div class="info">fx</div>
       <div class="input" contenteditable spellcheck="false"></div>    
     `
-  }
-
-  onInput() {
-    console.log(this)
-    console.log('Formula: onInput', event.target.textContent.trim())
   }
 }

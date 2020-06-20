@@ -10,27 +10,30 @@ export class DomListener {
   }
 
   initDOMListeners() {
-    // console.log(this.listeners, this.$root)
     this.listeners.forEach(listener => {
       const method = getMethodName(listener)
-      console.log(this['onInput'])
+
       if (!this[method]) {
         const name = this.name || ''
         throw new Error(`Method ${method} 
           is not implemented in ${name} Component`)
       }
-      // $ realisation of this.$root.addEventListener(eventType, callback)
-      this.$root.on(listener, this[method].bind(this))
+
+      this[method] = this[method].bind(this)
+      this.$root.add(listener, this[method])
     })
   }
 
   removeDOMListeners() {
-
+    this.listeners.forEach(listener => {
+      const method = getMethodName(listener)
+      this.$root.delete(listener, this[method])
+    })
   }
 }
 
-// Private method
-// getMethodName(eventName)
+// Private methods
+
 function getMethodName(eventName) {
   return 'on' + capitalize(eventName)
 }

@@ -32,8 +32,12 @@ class Dom {
     return this
   }
 
-  on(eventType, callback) {
+  add(eventType, callback) {
     this.$el.addEventListener(eventType, callback)
+  }
+
+  delete(eventType, callback) {
+    this.$el.removeEventListener(eventType)
   }
 }
 
