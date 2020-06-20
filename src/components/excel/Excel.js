@@ -11,7 +11,7 @@ export class Excel {
     // $ from dom.js helps to make it shorter
     const $root = $.create('div', 'excel')
 
-    this.components.forEach(Component => {
+    this.components = this.components.map(Component => {
       // const $el = document.createElement('div')
       // $el.classList.add(Component.className)
       const $el = $.create('div', Component.className)
@@ -22,8 +22,9 @@ export class Excel {
       $root.append($el)
       // $root.insertAdjacentHTML('beforeend', component.toHTML())
       // console.log(component.toHTML())
+      return component
     })
-
+    // console.log(this.components)
     return $root
   }
 
@@ -34,5 +35,7 @@ export class Excel {
     // this.$el.insertAdjacentHTML('afterbegin', `<h1>Test</h1>`)
 
     this.$el.append(this.getRoot())
+
+    this.components.forEach(component => component.init())
   }
 }
