@@ -33,10 +33,12 @@ export function createTable(rowsCount = 60) {
 }
 
 function createRow(index, content) {
+  const resizer = index ? '<div class="row-resize"></div>' : ''
   return `
     <div class="row">
         <div class="row-info">
-        ${index == 0 ? '' : index}
+        ${index == 0 ? '' : index}        
+        ${resizer}
         </div>
         <div class="row-data">
         ${content}
@@ -49,6 +51,7 @@ function createCol(col) {
   return `
     <div class="column">
         ${col}
+        <div class="col-resize"></div>
     </div>
   `
 }
