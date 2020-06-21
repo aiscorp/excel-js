@@ -47,18 +47,18 @@ function createRow(index, content) {
   `
 }
 
-function createCol(col) {
+function createCol(col, index) {
   return `
-    <div class="column" data-type="resizable">
+    <div class="column" data-type="resizable" data-col="${index}">
         ${col}
         <div class="col-resize" data-resize="col"></div>
     </div>
   `
 }
 
-function createCell(cell) {
+function createCell(cell, index) {
   return `
-    <div class="cell" contenteditable>
+    <div class="cell" contenteditable data-col="${index}">
         ${cell}
     </div>
   `

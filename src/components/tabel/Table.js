@@ -33,18 +33,33 @@ export class Table extends ExcelComponent {
       const $type = event.target.dataset.resize
       const coords = $parent.getCoords()
 
+      const cells = this.$root.findAll(`[data-col="${$parent.data.col}"]`)
+
+
       document.onmousemove = e => {
         if ($type === 'col') {
           const deltaX = e.pageX - coords.right
-          $parent.$el.style.width = (coords.width + deltaX) + 'px'
+          const value = coords.width + deltaX
+
+          $parent.$el.style.width = value + 'px'
+          // cells.forEach(element => element.style.width = value + 'px')
         } else if ($type === 'row') {
           const deltaY = e.clientY - coords.bottom
-          $parent.$el.style.height = (coords.height + deltaY) + 'px'
+          const value = coords.height + deltaY
+
+          $parent.$el.style.height = value + 'px'
         }
       }
 
       document.onmouseup = e => {
         document.onmousemove = null
+
+        if ($type === 'col') {
+          cells.forEach(element =>
+            element.style.width = $parent.$el.style.width)
+        } else if ($type === 'row') {
+
+        }
       }
     }
   }
