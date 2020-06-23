@@ -8,6 +8,7 @@ export class ExcelComponent extends DomListener {
 
   // Базовый шаблон компонента
   toHTML() {
+    // eslint-disable-next-line
     return ''
   }
 

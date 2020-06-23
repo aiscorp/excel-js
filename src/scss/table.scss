@@ -8,6 +8,7 @@
   top: $table-top;
   overflow-x: auto;
   padding-bottom: 2px;
+  user-select: none;
 
   .row {
     display: flex;
@@ -21,6 +22,7 @@
   }
 
   .row-info {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,6 +34,7 @@
   }
 
   .column {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,10 +61,64 @@
 
     &.selected {
       border: none;
-      outline: 2px solid #3c74ff;
+      outline: 2px solid $primary-color;
       z-index: 2;
 
     }
   }
+
+  .col-resize, .row-resize {
+    position: absolute;
+    background: $primary-color;
+    opacity: 0;
+    z-index: 2;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .col-resize {
+    top: 0;
+    bottom: 0;
+    right: -2px;
+    width: 4px;
+
+    &:hover {
+      cursor: col-resize;
+    }
+
+    &:hover::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 100vh;
+      left: 1px;
+      background: $primary-color;
+    }
+  }
+
+  .row-resize {
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 4px;
+
+    &:hover {
+      cursor: row-resize;
+    }
+
+    &:hover::after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      width: 100vw;
+      top: 1px;
+      background: $primary-color;
+      //opacity: 0;
+    }
+
+  }
+
 
 }

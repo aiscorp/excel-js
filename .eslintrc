@@ -13,7 +13,11 @@
     "no-unused-vars": "off",
     "no-trailing-spaces": "off",
     "indent": "off",
-    "no-empty": "off"
+    "no-empty": "off",
+    "linebreak-style": ["error", "windows"],
+    "max-len": "warn",
+    "padded-blocks": "warn",
+    "no-multiple-empty-lines": "warn"
   },
   "extends": ["eslint:recommended", "google"]
 }
