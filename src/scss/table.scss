@@ -94,15 +94,17 @@
 
 
     &.selected {
-      border: none;
-      outline: 2px solid $primary-color;
-      z-index: 2;
+      //border: none;
+      outline: 1px solid $primary-color;
+      //outline: 2px solid red;
+      border: 1px solid $primary-color;
+      background: $cell-bg-color-hover;
+      z-index: -1;
     }
 
     &:hover {
       background: $cell-bg-color-hover;
     }
-
   }
 
   .col-resize, .row-resize {

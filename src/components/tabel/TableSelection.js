@@ -25,8 +25,12 @@ export class TableSelection {
     this.group = []
   }
 
-  selectGroup() {
+  selectGroup($group = []) {
+    this.clear()
+    this.group = $group
 
+    this.group.forEach($el => $el.addClass(TableSelection.className))
   }
+
 
 }

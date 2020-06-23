@@ -70,6 +70,21 @@ class Dom {
     this.$el.classList.remove(className)
   }
 
+  row() {
+    return this.data.row
+  }
+
+  col() {
+    return this.data.col
+  }
+
+  id() {
+    return {
+      row: this.data.row,
+      col: this.data.col
+    }
+  }
+
   // css(styles = {})
   // {
   //   height: '30px,

@@ -61,11 +61,11 @@ function createCol(col, index) {
 
 // function createCell(cell, index, row) {
 //   return `
-//     <div class="cell" contenteditable data-col="${index+1}" data-row="${row}">
+//     <div class="cell" contenteditable data-col="${index+1}"
+//     data-row="${row}">
 //         ${cell}
 //     </div>  `
 // }
-
 
 function createCell(row) {
   return function(cell, col) {
