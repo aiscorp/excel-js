@@ -8,6 +8,7 @@
   top: $table-top;
   overflow-x: auto;
   padding-bottom: 2px;
+  user-select: none;
 
   .row {
     display: flex;
@@ -86,6 +87,15 @@
     &:hover {
       cursor: col-resize;
     }
+
+    &:hover::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 100vh;
+      left: 1px;
+      background: $primary-color;
+    }
   }
 
   .row-resize {
@@ -96,6 +106,16 @@
 
     &:hover {
       cursor: row-resize;
+    }
+
+    &:hover::after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      width: 100vw;
+      top: 1px;
+      background: $primary-color;
+      //opacity: 0;
     }
 
   }

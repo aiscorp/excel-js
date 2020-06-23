@@ -48,6 +48,8 @@ class Dom {
     return this.$el.getBoundingClientRect()
   }
 
+  // before: const $type = event.target.dataset.resize
+  // after: const $type = $resizer.data.resize
   get data() {
     return this.$el.dataset
   }
@@ -56,6 +58,21 @@ class Dom {
     return this.$el.querySelectorAll(selector)
   }
 
+  // css(styles = {})
+  // {
+  //   height: '30px,
+  //   width: '40px'
+  // }
+  // before: $parent.$el.style.width = value + 'px'
+  // after: $parent.css({width: value + 'px'})
+  css(styles = {}) {
+    Object.keys(styles).forEach(key => {
+      this.$el.style[key] = styles [key]
+    })
+
+
+    // this.$el
+  }
 }
 
 export function $(selector) {

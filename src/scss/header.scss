@@ -10,6 +10,7 @@
   padding: 8px 4px 0;
   display: flex;
   justify-content: space-between;
+  user-select: none;
 
   //background: #00aa00;
 
@@ -24,6 +25,7 @@
     font-size: 18px;
     line-height: 22px;
     outline: none;
+    user-select: auto;
 
     &:hover {
       border: 1px solid $border-color;
