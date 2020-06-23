@@ -4,6 +4,7 @@ import {resizeHandler} from '@/components/tabel/table.resize'
 import {isCellClick, isResize, matrix} from '@/components/tabel/table.functions'
 import {TableSelection} from '@/components/tabel/TableSelection'
 import {$} from '@core/dom'
+import {selectHandler} from '@/components/tabel/table.select'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -43,20 +44,7 @@ export class Table extends ExcelComponent {
       //
       // Selection cells
     } else if (isCellClick(event)) {
-      const $target = $(event.target)
-      if (event.shiftKey) {
-        // group selection
-
-        const $cells = matrix($target, this.selection.current)
-          .map(aac => this.$root
-            .find(`.cell[data-col="${aac.col}"][data-row="${aac.row}"]`))
-
-        this.selection.selectGroup($cells)
-        //
-      } else {
-        // single selection
-        this.selection.select($(event.target))
-      }
+      selectHandler(this.$root, event, this.selection)
     }
     console.log(event)
   }
