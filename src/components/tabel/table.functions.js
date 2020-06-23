@@ -7,3 +7,7 @@ export function isResize(event) {
   // }
   // return false
 }
+
+export function isCellClick(event) {
+  return event.target.dataset.type === 'cell'
+}

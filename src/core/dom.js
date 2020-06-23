@@ -58,6 +58,18 @@ class Dom {
     return this.$el.querySelectorAll(selector)
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className)
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className)
+  }
+
   // css(styles = {})
   // {
   //   height: '30px,
