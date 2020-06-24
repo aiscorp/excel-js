@@ -1,29 +1,97 @@
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/tabel/table.template'
 import {resizeHandler} from '@/components/tabel/table.resize'
-import {isResize} from '@/components/tabel/table.functions'
+import {findByCoords, isCellClick, isResize, nextSelector
+} from '@/components/tabel/table.functions'
+import {TableSelection} from '@/components/tabel/TableSelection'
+import {selectHandler} from '@/components/tabel/table.select'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: 'Table',
-      listeners: ['mousedown']
+      listeners: ['mousedown', 'keydown', 'input'],
+      ...options
     })
   }
 
-  /* EVENT
-  * ---- onMouseDown -----
-  * */
-  onMousedown(event) {
-    if (isResize(event)) {
-      resizeHandler(this.$root, event)
-    }
+  prepare() {
+    this.selection = new TableSelection()
   }
 
+  init() {
+    super.init()
+
+    this.selection
+      .select(findByCoords(this.$root, {row: 1, col: 1}))
+    this.$emit('table:textChange', this.selection.current.text())
+
+    this.$on('formula:input', input => {
+      this.selection.current.text(input)
+      console.log('Table from Formula', input)
+    })
+
+    this.$on('formula:done', key => {
+      const $nextCell = findByCoords(this.$root,
+        nextSelector(key, this.selection.current.id()))
+      this.selection.select($nextCell)
+      this.$emit('table:textChange', this.selection.current.text())
+    })
+  }
 
   toHTML() {
     return createTable()
   }
+
+  /* EVENT
+   * ---- onMouseDown -----
+   * */
+  onMousedown(event) {
+    // Resize cols and rows
+    if (isResize(event)) {
+      resizeHandler(this.$root, event)
+      //
+      // Selection cells
+    } else if (isCellClick(event)) {
+      selectHandler(this.$root, event, this.selection)
+
+      this.$emit('table:textChange', this.selection.current.text())
+    }
+    console.log(event)
+  }
+
+  /* EVENT
+   * ---- onKeyDown -----
+   * */
+  onKeydown(event) {
+    const keys = [
+      'Enter', 'Tab',
+      'ArrowLeft', 'ArrowRight',
+      'ArrowUp', 'ArrowDown'
+    ]
+
+    const {key} = event
+
+    if (keys.includes(key) && !event.shiftKey) {
+      event.preventDefault()
+      const $nextCell = findByCoords(this.$root,
+        nextSelector(key, this.selection.current.id()))
+      this.selection.select($nextCell)
+      this.$emit('table:textChange', this.selection.current.text())
+      console.log(key)
+    }
+  }
+
+  /* EVENT
+   * ---- onKeyDown -----
+   * */
+  onInput(event) {
+    this.$emit('table:textChange', this.selection.current.text())
+  }
+
+  // functions helpers
 }
+
+

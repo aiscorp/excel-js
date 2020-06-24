@@ -14,6 +14,21 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
+  text(text) {
+    // setter
+    if (typeof text === 'string') {
+      this.$el.textContent = text
+      return this
+    }
+    // getter
+    // for <input>
+    if (this.$el.tagName.toLowerCase() === 'input') {
+      return this.$el.value.trim()
+    }
+    // for <div>
+    return this.$el.textContent.trim()
+  }
+
   clear() {
     this.html('')
     return this
@@ -56,6 +71,40 @@ class Dom {
 
   findAll(selector) {
     return this.$el.querySelectorAll(selector)
+  }
+
+  find(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className)
+    return this
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className)
+    return this
+  }
+
+  row() {
+    return this.data.row
+  }
+
+  col() {
+    return this.data.col
+  }
+
+  id() {
+    return {
+      row: this.data.row,
+      col: this.data.col
+    }
+  }
+
+  focus() {
+    this.$el.focus()
+    return this
   }
 
   // css(styles = {})

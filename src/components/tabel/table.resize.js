@@ -26,7 +26,6 @@ export function resizeHandler($root, event) {
 
   // ---- onMouseUp ----
   document.onmouseup = e => {
-    console.log(e.target)
     // deleting "onmousemove" event
     document.onmousemove = null
     document.onmouseup = null
