@@ -1,9 +1,11 @@
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/tabel/table.template'
 import {resizeHandler} from '@/components/tabel/table.resize'
-import {isCellClick, isResize, matrix} from '@/components/tabel/table.functions'
+import {
+  findByCoords, isCellClick,
+   isResize, nextSelector
+} from '@/components/tabel/table.functions'
 import {TableSelection} from '@/components/tabel/TableSelection'
-import {$} from '@core/dom'
 import {selectHandler} from '@/components/tabel/table.select'
 
 export class Table extends ExcelComponent {
@@ -12,7 +14,7 @@ export class Table extends ExcelComponent {
   constructor($root) {
     super($root, {
       name: 'Table',
-      listeners: ['mousedown']
+      listeners: ['mousedown', 'keydown']
     })
   }
 
@@ -23,11 +25,7 @@ export class Table extends ExcelComponent {
   init() {
     super.init()
 
-
-    const $cell = this.$root.find('.cell[data-col="5"][data-row="3"]')
-    this.selection.select($cell)
-
-    this.selection.selectByCoords(this.$root, 1, 1)
+    this.selection.select(findByCoords(this.$root, {row: 1, col: 1}))
   }
 
   toHTML() {
@@ -48,4 +46,27 @@ export class Table extends ExcelComponent {
     }
     console.log(event)
   }
+
+  /* EVENT
+   * ---- onKeyDown -----
+   * */
+  onKeydown(event) {
+    const keys = [
+      'Enter', 'Tab',
+      'ArrowLeft', 'ArrowRight',
+      'ArrowUp', 'ArrowDown'
+    ]
+
+    const {key} = event
+
+    if (keys.includes(key) && !event.shiftKey) {
+      event.preventDefault()
+      const $nextCell = findByCoords(this.$root, nextSelector(key, this.selection.current.id()))
+      this.selection.select($nextCell)
+      console.log(key)
+    }
+  }
+
 }
+
+

@@ -85,6 +85,11 @@ class Dom {
     }
   }
 
+  focus() {
+    this.$el.focus()
+    return this
+  }
+
   // css(styles = {})
   // {
   //   height: '30px,

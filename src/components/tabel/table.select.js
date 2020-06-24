@@ -1,5 +1,5 @@
 import {$} from '@core/dom'
-import {matrix} from '@/components/tabel/table.functions'
+import {isGroupSelection, matrix} from '@/components/tabel/table.functions'
 
 export function selectHandler($root, event, selection) {
   const $target = $(event.target)
@@ -34,7 +34,7 @@ export function selectHandler($root, event, selection) {
     document.onmouseup = null
 
     console.log($current.id(), $target.id())
-    if ($current.id().col !== $target.id().col || $current.id().row !== $target.id().row) {
+    if (isGroupSelection($current, $target)) {
       console.log('Selection group()')
 
       const $cells = matrix($current, selection.current)
@@ -43,8 +43,5 @@ export function selectHandler($root, event, selection) {
 
       selection.selectGroup($cells)
     }
-
-
   }
-
 }
