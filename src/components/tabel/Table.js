@@ -11,11 +11,13 @@ import {selectHandler} from '@/components/tabel/table.select'
 export class Table extends ExcelComponent {
   static className = 'excel__table'
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: 'Table',
-      listeners: ['mousedown', 'keydown']
+      listeners: ['mousedown', 'keydown'],
+        ...options
     })
+    this.unsubs = []
   }
 
   prepare() {
@@ -25,8 +27,21 @@ export class Table extends ExcelComponent {
   init() {
     super.init()
 
-    this.selection.select(findByCoords(this.$root, {row: 1, col: 1}))
+    this.selection
+      .select(findByCoords(this.$root, {row: 1, col: 1}))
+
+    const unsub = this.emitter.subscribe('formula:input', input => {
+      this.selection.current.text(input)
+      console.log('Table from Formula', input)
+    })
+    this.unsubs.push(unsub)
   }
+
+  destroy() {
+    super.destroy()
+    this.unsubs.forEach(u => u())
+  }
+
 
   toHTML() {
     return createTable()
