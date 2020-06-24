@@ -1,9 +1,7 @@
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/tabel/table.template'
 import {resizeHandler} from '@/components/tabel/table.resize'
-import {
-  findByCoords, isCellClick,
-   isResize, nextSelector
+import {findByCoords, isCellClick, isResize, nextSelector
 } from '@/components/tabel/table.functions'
 import {TableSelection} from '@/components/tabel/TableSelection'
 import {selectHandler} from '@/components/tabel/table.select'
@@ -14,10 +12,9 @@ export class Table extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: 'Table',
-      listeners: ['mousedown', 'keydown'],
-        ...options
+      listeners: ['mousedown', 'keydown', 'input'],
+      ...options
     })
-    this.unsubs = []
   }
 
   prepare() {
@@ -29,19 +26,20 @@ export class Table extends ExcelComponent {
 
     this.selection
       .select(findByCoords(this.$root, {row: 1, col: 1}))
+    this.$emit('table:textChange', this.selection.current.text())
 
-    const unsub = this.emitter.subscribe('formula:input', input => {
+    this.$on('formula:input', input => {
       this.selection.current.text(input)
       console.log('Table from Formula', input)
     })
-    this.unsubs.push(unsub)
-  }
 
-  destroy() {
-    super.destroy()
-    this.unsubs.forEach(u => u())
+    this.$on('formula:done', key => {
+      const $nextCell = findByCoords(this.$root,
+        nextSelector(key, this.selection.current.id()))
+      this.selection.select($nextCell)
+      this.$emit('table:textChange', this.selection.current.text())
+    })
   }
-
 
   toHTML() {
     return createTable()
@@ -58,6 +56,8 @@ export class Table extends ExcelComponent {
       // Selection cells
     } else if (isCellClick(event)) {
       selectHandler(this.$root, event, this.selection)
+
+      this.$emit('table:textChange', this.selection.current.text())
     }
     console.log(event)
   }
@@ -76,12 +76,22 @@ export class Table extends ExcelComponent {
 
     if (keys.includes(key) && !event.shiftKey) {
       event.preventDefault()
-      const $nextCell = findByCoords(this.$root, nextSelector(key, this.selection.current.id()))
+      const $nextCell = findByCoords(this.$root,
+        nextSelector(key, this.selection.current.id()))
       this.selection.select($nextCell)
+      this.$emit('table:textChange', this.selection.current.text())
       console.log(key)
     }
   }
 
+  /* EVENT
+   * ---- onKeyDown -----
+   * */
+  onInput(event) {
+    this.$emit('table:textChange', this.selection.current.text())
+  }
+
+  // functions helpers
 }
 
 

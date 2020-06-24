@@ -18,13 +18,6 @@ export function selectHandler($root, event, selection) {
     selection.select($(event.target))
   }
 
-
-  // ---- onMouseMove ----
-  // document.onmousemove = e => {
-  //   console.log('Selection, onMouseMove()', $target)
-  //
-  // }
-
   // ---- onMouseUp ----
   document.onmouseup = e => {
     const $current = $(e.target)

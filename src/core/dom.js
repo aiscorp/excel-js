@@ -15,7 +15,18 @@ class Dom {
   }
 
   text(text) {
-    this.$el.textContent = text
+    // setter
+    if (typeof text === 'string') {
+      this.$el.textContent = text
+      return this
+    }
+    // getter
+    // for <input>
+    if (this.$el.tagName.toLowerCase() === 'input') {
+      return this.$el.value.trim()
+    }
+    // for <div>
+    return this.$el.textContent.trim()
   }
 
   clear() {
@@ -68,10 +79,12 @@ class Dom {
 
   addClass(className) {
     this.$el.classList.add(className)
+    return this
   }
 
   removeClass(className) {
     this.$el.classList.remove(className)
+    return this
   }
 
   row() {

@@ -5,7 +5,6 @@ const CODES = {
 
 const COLS = CODES.Z - CODES.A + 1
 
-
 export function createTable(rowsCount = 60) {
   const colsCount = COLS
   const rows = []
@@ -22,7 +21,6 @@ export function createTable(rowsCount = 60) {
     } else {
       cols = new Array(colsCount)
         .fill('')
-        // .map(toHeaderChar)
         // .map((col = '', index) =>
         //   createCell(col, index, row))
         .map(createCell(row))
@@ -59,14 +57,6 @@ function createCol(col, index) {
   `
 }
 
-// function createCell(cell, index, row) {
-//   return `
-//     <div class="cell" contenteditable data-col="${index+1}"
-//     data-row="${row}">
-//         ${cell}
-//     </div>  `
-// }
-
 function createCell(row) {
   return function(cell, col) {
     return `
@@ -74,7 +64,7 @@ function createCell(row) {
         data-col="${col+1}" 
         data-row="${row}"
         data-type="cell">
-        ${cell}
+        ${cell}${row}:${col+1}
     </div>
   `
   }

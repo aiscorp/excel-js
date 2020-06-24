@@ -31,5 +31,4 @@ export class TableSelection {
 
     this.group.forEach($el => $el.addClass(TableSelection.className))
   }
-
 }

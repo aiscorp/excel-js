@@ -7,6 +7,7 @@ export class Excel {
     this.components = options.components || []
     this.emitter = new Emitter()
   }
+
   getRoot() {
     const $root = $.create('div', 'excel')
 
@@ -25,9 +26,12 @@ export class Excel {
     return $root
   }
 
-
   render() {
     this.$el.append(this.getRoot())
     this.components.forEach(component => component.init())
+  }
+
+  destroy() {
+    this.components.forEach(component => component.destroy())
   }
 }

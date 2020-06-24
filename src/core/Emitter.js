@@ -20,7 +20,7 @@ export class Emitter {
 
   /*
    * subscribe(event:string, function callback())
-   * subscribing on events
+   * subscribing on event
    * formula.subscribe('table:select', funcname)
    */
   subscribe(event, callback) {
