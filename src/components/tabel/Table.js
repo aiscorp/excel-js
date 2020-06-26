@@ -1,7 +1,8 @@
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/tabel/table.template'
 import {resizeHandler} from '@/components/tabel/table.resize'
-import {findByCoords, isCellClick, isResize, nextSelector
+import {
+  findByCoords, isCellClick, isResize, nextSelector
 } from '@/components/tabel/table.functions'
 import {TableSelection} from '@/components/tabel/TableSelection'
 import {selectHandler} from '@/components/tabel/table.select'
@@ -42,10 +43,6 @@ export class Table extends ExcelComponent {
       this.selectCell($nextCell)
       this.updateCellInStore()
     })
-
-    // this.$subscribe(state => {
-    //   console.log('TableState', state)
-    // })
   }
 
   toHTML() {
@@ -99,7 +96,9 @@ export class Table extends ExcelComponent {
     this.updateCellInStore()
   }
 
-  // functions helpers
+  /*
+   * functions helpers
+   */
   updateCellInStore() {
     this.$dispatch(actions.tableTextChange({
       id: this.selection.current.id(),
