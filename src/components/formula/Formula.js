@@ -20,6 +20,10 @@ export class Formula extends ExcelComponent {
     this.$on('table:textChange', text => {
       this.$formula.text(text)
     })
+
+    // this.$subscribe(state => {
+    //   console.log('FormulaState', state)
+    // })
   }
 
   onInput(event) {
