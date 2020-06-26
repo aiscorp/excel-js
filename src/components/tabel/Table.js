@@ -33,13 +33,14 @@ export class Table extends ExcelComponent {
 
     this.$on('formula:input', input => {
       this.selection.current.text(input)
-      console.log('Table from Formula', input)
+      this.updateCellInStore()
     })
 
     this.$on('formula:done', key => {
       const $nextCell = findByCoords(this.$root,
         nextSelector(key, this.selection.current.id()))
       this.selectCell($nextCell)
+      this.updateCellInStore()
     })
 
     // this.$subscribe(state => {
@@ -64,7 +65,8 @@ export class Table extends ExcelComponent {
       selectHandler(this.$root, event, this.selection)
 
       this.$emit('table:textChange', this.selection.current.text())
-      this.$dispatch({type: 'table:textChange'})
+
+      this.updateCellInStore()
     }
   }
 
@@ -86,16 +88,25 @@ export class Table extends ExcelComponent {
         nextSelector(key, this.selection.current.id()))
       this.selectCell($nextCell)
     }
+    this.updateCellInStore()
   }
 
   /* EVENT
    * ---- onKeyDown -----
    * */
   onInput(event) {
-    this.$emit('table:textChange', this.selection.current.text())
+    // this.$emit('table:textChange', this.selection.current.text())
+    this.updateCellInStore()
   }
 
   // functions helpers
+  updateCellInStore() {
+    this.$dispatch(actions.tableTextChange({
+      id: this.selection.current.id(),
+      value: this.selection.current.text()
+    }))
+  }
+
   selectCell($cell) {
     this.selection.select($cell)
     this.$emit('table:textChange', $cell.text())

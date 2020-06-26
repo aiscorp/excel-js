@@ -9,9 +9,9 @@ export function tableResize(data) {
 }
 
 // tableResize action creator
-export function tableTextChange(data) {
+export function tableTextChange(value) {
   return {
     type: types.TABLE_TEXT_CHANGE,
-    data
+    data: value
   }
 }

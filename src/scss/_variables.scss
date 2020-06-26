@@ -12,6 +12,7 @@ $table-top: $header-height + $toolbar-height + $formula-height;
 $row-height: 24px;
 
 $cell-width: 100px;
+$cell-min-width: 20px;
 $cell-color: #e0e0e0;
 $cell-bg-color-hover: #f8f9fa;
 

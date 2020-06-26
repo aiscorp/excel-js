@@ -37,7 +37,7 @@ function createRow({index, height, content}) {
   const resizer = index ?
     `<div class="row-resize" 
           data-resize="row">            
-     </div>` : 
+     </div>` :
     ''
   return `
     <div class="row" 
@@ -58,7 +58,7 @@ function createRow({index, height, content}) {
 function createCol({val, index, row, width}) {
   return `
     <div class="column" style="width: ${width}"
-        data-type="resizable" data-col="${index+1}">
+        data-type="resizable" data-col="${index + 1}">
         ${val}
         <div class="col-resize" data-resize="col"></div>
     </div>
@@ -67,9 +67,9 @@ function createCol({val, index, row, width}) {
 
 function createCell({val, index, row, width}) {
     return `
-    <div class="cell" contenteditable 
+    <div class="cell" contenteditable
         style="width: ${width}"
-        data-col="${index+1}" 
+        data-col="${index + 1}" 
         data-row="${row}"
         data-type="cell">
         ${val}
@@ -92,25 +92,25 @@ function withColState(state, row) {
   return function({val, index}) {
     return {
       val, index, row,
-      width: (state.colState[index+1] + 'px') || ''
+      width: (state.colState[index + 1] + 'px') || ''
     }
   }
 }
 
 function withRowState(state, row, content) {
-    return {
-      index: row,
-      height: (state.rowState[row] + 'px') || '',
-      content
-    }
+  return {
+    index: row,
+    height: (state.rowState[row] + 'px') || '',
+    content
+  }
 }
 
 function withCellState(state, row) {
   return function(val, index) {
+    const id = row + ':' + (+index+1)
     return {
-      val: row + ':' + (index+1),
+      val: (state.cellState[id]) || '',
       index
-      // cell: state.cellState[index] || ''
     }
   }
 }

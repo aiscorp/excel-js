@@ -55,7 +55,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 40px;
+    min-width: $cell-min-width;
     width: $cell-width;
     height: 100%;
     border: 1px solid $border-color;
@@ -82,7 +82,7 @@
   }
 
   .cell {
-    min-width: 40px;
+    min-width: $cell-min-width;
     width: $cell-width;
     padding: 5px;
     border: 1px solid $cell-color;
@@ -91,6 +91,7 @@
     height: 100%;
     white-space: nowrap;
     outline: none;
+    //user-select: none;
 
 
     &.selected {

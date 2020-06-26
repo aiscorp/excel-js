@@ -17,13 +17,14 @@ export class Formula extends ExcelComponent {
 
     this.$formula = this.$root.find('#formula')
 
-    this.$on('table:textChange', text => {
-      this.$formula.text(text)
-    })
-
-    // this.$subscribe(state => {
-    //   console.log('FormulaState', state)
+    // this.$on('table:textChange', text => {
+    //   this.$formula.text(text)
     // })
+
+    this.$subscribe(state => {
+      this.$formula.text(state.currentText)
+      console.log('FormulaState', state)
+    })
   }
 
   onInput(event) {

@@ -10,6 +10,7 @@ export function capitalize(string) {
 }
 
 export function range(start, end) {
+  // eslint-disable-next-line no-undef
   if (start > end) {
     return new Array(+start - end + 1)
       .fill('')
@@ -18,6 +19,14 @@ export function range(start, end) {
     return new Array(+end - start + 1)
       .fill('')
       .map((_, index) => (+start + index))
+  }
+}
+
+export function parseCellId(textId) {
+  const t = textId.split(':')
+  return {
+    row: +t[0],
+    col: +t[1]
   }
 }
 
