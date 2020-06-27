@@ -9,15 +9,21 @@ export function capitalize(string) {
 
 // !!! bug in function range() !!!
 export function range(start, end) {
-  if (start > end) {
-    return new Array(+start - end + 1)
-      .fill('')
-      .map((_, index) => (+end + index))
-  } else {
-    return new Array(+end - start + 1)
-      .fill('')
-      .map((_, index) => (+start + index))
+  try {
+    if (+start > +end) {
+      return new Array(+start - end + 1)
+        .fill('')
+        .map((_, index) => (+end + index))
+    } else {
+      return new Array(+end - start + 1)
+        .fill('')
+        .map((_, index) => (+start + index))
+    }
+  } catch (e) {
+    console.warn(`Selection ERROR in range(${start}, ${end} 
+      {start > end: ${+start - end + 1}}, {start < end: ${+end - start + 1}}`)
   }
+
 }
 
 // parse '123:567' to {row: 123, col: 567}
