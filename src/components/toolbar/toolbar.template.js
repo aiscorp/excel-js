@@ -1,4 +1,4 @@
-export function createToolbar() {
+export function createToolbar(state) {
   const buttons = [
     {
       icon: 'note_add',
@@ -21,34 +21,38 @@ export function createToolbar() {
     {
       icon: 'format_align_left',
       action: 'cell-left',
-      active: true,
+      active: state['cell-left'],
       style: {textAlign: 'left'}
     },
     {
       icon: 'format_align_right',
       action: 'cell-right',
+      active: state['cell-right'],
       style: {textAlign: 'right'}
     },
     {
       icon: 'format_align_center',
       action: 'cell-center',
+      active: state['cell-center'],
       style: {textAlign: 'center'}
     },
     {type: 'spacer'},
     {
       icon: 'format_bold',
       action: 'cell-bold',
-      active: true,
+      active: state['cell-bold'],
       style: {fontWeight: 'bold'}
     },
     {
       icon: 'format_italic',
       action: 'cell-italic',
+      active: state['cell-italic'],
       style: {fontStyle: 'italic'}
     },
     {
       icon: 'format_underlined',
       action: 'cell-underline',
+      active: state['cell-underline'],
       style: {textDecoration: 'underline'}
     },
     {type: 'spacer'},

@@ -23,7 +23,6 @@ export function range(start, end) {
     console.warn(`Selection ERROR in range(${start}, ${end} 
       {start > end: ${+start - end + 1}}, {start < end: ${+end - start + 1}}`)
   }
-
 }
 
 // parse '123:567' to {row: 123, col: 567}
