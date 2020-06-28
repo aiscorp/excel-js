@@ -18,8 +18,9 @@ export class Formula extends ExcelComponent {
 
     this.$formula = this.$root.find('#formula')
 
-    this.$on('table:textChange', text => {
-      this.$formula.text(text)
+    this.$on('table:textChange', $cell => {
+      this.$formula.text($cell.data.value)
+      // this.$formula.text(text)
     })
   }
 
@@ -32,15 +33,11 @@ export class Formula extends ExcelComponent {
   }
 
   onKeydown(event) {
-    const keys = [
-      'Enter', 'Tab'
-    ]
-
+    const keys = ['Enter', 'Tab']
     const {key} = event
 
     if (keys.includes(key)) {
       event.preventDefault()
-
       this.$emit('formula:done', key)
     }
   }

@@ -1,6 +1,7 @@
 import {defaultStyles} from '@/constants'
 import {toInlineStyles} from '@core/utils'
 import {stateToStyle} from '@/components/tabel/table.functions'
+import {parse} from '@core/parse'
 
 const CODES = {
   A: 65, Z: 90
@@ -75,8 +76,9 @@ function createCell({val, style, index, row, width}) {
         style="${styles}; width: ${width}"
         data-col="${index + 1}" 
         data-row="${row}"
-        data-type="cell">
-        ${val}
+        data-type="cell"
+        data-value="${val || ''}">
+        ${parse(val) || ''}
     </div>
   `
 }

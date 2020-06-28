@@ -8,6 +8,8 @@ import {TableSelection} from '@/components/tabel/TableSelection'
 import {selectHandler} from '@/components/tabel/table.select'
 import * as actions from '@/redux/action'
 import {defaultStyles} from '@/constants'
+import {$} from '@core/dom'
+import {parse} from '@core/parse'
 
 
 export class Table extends ExcelComponent {
@@ -16,7 +18,7 @@ export class Table extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: 'Table',
-      listeners: ['mousedown', 'keydown', 'input'],
+      listeners: ['mousedown', 'keydown', 'input', 'dblclick'],
       ...options
     })
   }
@@ -33,15 +35,19 @@ export class Table extends ExcelComponent {
     // select first el
     this.selection
       .select(findByCoords(this.$root, {row: 1, col: 1}))
-    this.$emit('table:textChange', this.selection.current.text())
+    this.$emit('table:textChange', this.selection.current)
     // select it on toolbar
     const state = styleToState(this.selection.current
       .getStyles(Object.keys(defaultStyles)))
     this.$dispatch(actions.tableStyleChange(state))
 
 
+    // formula input
     this.$on('formula:input', input => {
-      this.selection.current.text(input)
+      // parse formulas
+      this.selection.current
+        .attr('data-value', input)
+        .text(parse(input))
       this.updateCellInStore()
     })
 
@@ -80,7 +86,8 @@ export class Table extends ExcelComponent {
     } else if (isCellClick(event)) {
       selectHandler(this.$root, event, this.selection)
       // !!!!!!!!!!  selectCell($cell) ISN'T WORKING HEAR - NEED TO CORRECT
-      this.$emit('table:textChange', this.selection.current.text())
+      // this.$emit('table:textChange', this.selection.current.text())
+      this.$emit('table:textChange', this.selection.current)
       //
       const state = styleToState(this.selection.current
         .getStyles(Object.keys(defaultStyles)))
@@ -88,6 +95,15 @@ export class Table extends ExcelComponent {
       //
       this.updateCellInStore()
     }
+  }
+
+  onDblclick(event) {
+    // console.log('Double!')
+    const $cell = $(event.target)
+
+    $cell.attr('contenteditable') === 'true' ?
+      $cell.attr('contenteditable', 'false') :
+      $cell.attr('contenteditable', 'true')
   }
 
   /* EVENT
@@ -125,13 +141,14 @@ export class Table extends ExcelComponent {
   updateCellInStore() {
     this.$dispatch(actions.tableTextChange({
       id: this.selection.current.id(),
-      value: this.selection.current.text()
+      value: this.selection.current.attr('data-value')
+      // value: this.selection.current.text()
     }))
   }
 
   selectCell($cell) {
     this.selection.select($cell)
-    this.$emit('table:textChange', $cell.text())
+    this.$emit('table:textChange', $cell)
 
     const state = styleToState($cell.getStyles(Object.keys(defaultStyles)))
     this.$dispatch(actions.tableStyleChange(state))
