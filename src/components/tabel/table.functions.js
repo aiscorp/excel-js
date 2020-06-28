@@ -77,6 +77,14 @@ export function stateToStyle(state) {
         state[key] ? styles.textDecoration = 'underline' :
           styles.textDecoration = 'none'
         break
+      case 'cell-border':
+        state[key] ? styles.border = '2px solid black' :
+          styles.border = ''
+        break
+      case 'cell-color':
+        state[key] ? styles.backgroundColor = '#8ec29a' :
+          styles.backgroundColor = '#fff'
+        break
       case 'cell-erase':
         break
     }
@@ -107,6 +115,15 @@ export function styleToState(styles) {
       case 'textDecoration':
         styles[key] === 'underline' ? state['cell-underline'] = true :
           state['cell-underline'] = false
+        break
+      case 'border':
+        styles[key] === '2px solid black' ? state['cell-border'] = true :
+          state['cell-border'] = false
+        break
+      case 'backgroundColor':
+        console.log(styles[key])
+        styles[key] === 'rgb(142, 194, 154)' ? state['cell-color'] = true :
+          state['cell-color'] = false
         break
       case 'cell-erase':
         break

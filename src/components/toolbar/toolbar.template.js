@@ -53,6 +53,17 @@ export function createToolbar(state) {
     {
       icon: 'delete_sweep',
       action: 'cell-erase'
+    },
+    {type: 'spacer'},
+    {
+      icon: 'border_all',
+      action: 'cell-border',
+      active: state['cell-border']
+    },
+    {
+      icon: 'format_paint',
+      action: 'cell-color',
+      active: state['cell-color']
     }
   ]
 

@@ -3,9 +3,11 @@ export const defaultStyles = {
   fontWeight: 'normal',
   textDecoration: 'none',
   fontStyle: 'normal',
-  fontSize: '',
-  color: 'black',
-  background: 'white'
+  fontSize: '12px',
+  color: '#333',
+  backgroundColor: '#fff',
+  border: ''
+  // border: '1px solid black'
 }
 
 export const defaultTitle = 'New table #1'

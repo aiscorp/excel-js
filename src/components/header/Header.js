@@ -2,6 +2,7 @@ import {ExcelComponent} from '@core/ExcelComponent'
 import {$} from '@core/dom'
 import {defaultTitle} from '@/constants'
 import * as actions from '@/redux/action'
+import {debounce} from '@core/utils'
 
 export class Header extends ExcelComponent {
   static className = 'excel__header'
@@ -13,6 +14,10 @@ export class Header extends ExcelComponent {
       subscribe: ['title'],
       ...options
     })
+  }
+
+  prepare() {
+    this.onInput = debounce(this.onInput, 500)
   }
 
   init() {

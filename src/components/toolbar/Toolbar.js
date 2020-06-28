@@ -56,10 +56,17 @@ export class Toolbar extends ExcelStateComponent {
         case 'cell-underline':
           this.toggle(action, prevState)
           break
+        case 'cell-border':
+          this.toggle(action, prevState)
+          break
+        case 'cell-color':
+          this.toggle(action, prevState)
+          break
         case 'cell-erase':
           this.$emit('table:textChange', '')
           this.$emit('formula:input', '')
           break
+
 
         default:
           console.log('Action not found: ' + $target.data.action)
