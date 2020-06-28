@@ -24,3 +24,11 @@ export function tableStyleChange(data) {
   }
 }
 
+// value, ids
+export function tableStyleApply(data) {
+  return {
+    type: types.TABLE_STYLE_APPLY,
+    data
+  }
+}
+

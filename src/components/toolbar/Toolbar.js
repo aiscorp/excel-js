@@ -30,6 +30,7 @@ export class Toolbar extends ExcelStateComponent {
   }
 
   storeChanged({currentStyles}) {
+    console.log(currentStyles)
     this.setState(currentStyles)
   }
 
@@ -56,6 +57,8 @@ export class Toolbar extends ExcelStateComponent {
           this.toggle(action, prevState)
           break
         case 'cell-erase':
+          this.$emit('table:textChange', '')
+          this.$emit('formula:input', '')
           break
 
         default:

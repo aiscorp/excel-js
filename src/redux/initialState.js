@@ -5,9 +5,16 @@ const defaultState = {
   colState: {},
   rowState: {},
   cellState: {}, // [row:col]: data
+  stylesState: {}, // [row:col]: data
   currentStyles: defaultStyles,
   currentText: ''
 }
 
+const normalize = state => ({
+  ...state,
+  currentStyles: defaultStyles,
+  currentText: ''
+})
+
 export const initialState = storage('excel-state') ?
-  storage('excel-state') : defaultState
+  normalize(storage('excel-state')) : defaultState

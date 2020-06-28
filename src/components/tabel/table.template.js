@@ -1,5 +1,6 @@
 import {defaultStyles} from '@/constants'
-import {camelToDashCase} from '@core/utils'
+import {toInlineStyles} from '@core/utils'
+import {stateToStyle} from '@/components/tabel/table.functions'
 
 const CODES = {
   A: 65, Z: 90
@@ -7,7 +8,6 @@ const CODES = {
 const COLS = CODES.Z - CODES.A + 1
 
 export function createTable(state = {}) {
-  console.log(state)
   const rowsCount = 60
   const colsCount = COLS
   const rows = []
@@ -68,10 +68,8 @@ function createCol({val, index, row, width}) {
   `
 }
 
-function createCell({val, index, row, width}) {
-  const styles = Object.keys(defaultStyles)
-    .map(key => `${camelToDashCase(key)}: ${defaultStyles[key]}`)
-    .join(';')
+function createCell({val, style, index, row, width}) {
+  const styles = toInlineStyles(style ? stateToStyle(style) : defaultStyles)
     return `
     <div class="cell" contenteditable
         style="${styles}; width: ${width}"
@@ -94,9 +92,9 @@ function toHeaderChar(_, index) {
 }
 
 function withColState(state, row) {
-  return function({val, index}) {
+  return function({val, style, index}) {
     return {
-      val, index, row,
+      val, style, index, row,
       width: (state.colState[index + 1] + 'px') || ''
     }
   }
@@ -115,6 +113,7 @@ function withCellState(state, row) {
     const id = row + ':' + (+index+1)
     return {
       val: (state.cellState[id]) || '',
+      style: (state.stylesState[id]) || '',
       index
     }
   }

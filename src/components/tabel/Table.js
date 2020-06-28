@@ -23,14 +23,22 @@ export class Table extends ExcelComponent {
 
   prepare() {
     this.selection = new TableSelection()
+
+
   }
 
   init() {
     super.init()
 
+    // select first el
     this.selection
       .select(findByCoords(this.$root, {row: 1, col: 1}))
     this.$emit('table:textChange', this.selection.current.text())
+    // select it on toolbar
+    const state = styleToState(this.selection.current
+      .getStyles(Object.keys(defaultStyles)))
+    this.$dispatch(actions.tableStyleChange(state))
+
 
     this.$on('formula:input', input => {
       this.selection.current.text(input)
@@ -46,8 +54,13 @@ export class Table extends ExcelComponent {
 
     this.$on('toolbar:stateChange', state => {
       this.selection.applyStyles(stateToStyle(state))
-      // !!! NEED TO Future refactor - 50/50%
+      // ???
       this.$dispatch(actions.tableStyleChange(state))
+      //
+      this.$dispatch(actions.tableStyleApply({
+        value: state,
+        ids: this.selection.selectedIds
+      }))
     })
   }
 
