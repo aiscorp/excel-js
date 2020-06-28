@@ -31,4 +31,9 @@ export class TableSelection {
 
     this.group.forEach($el => $el.addClass(TableSelection.className))
   }
+
+  applyStyles(styles) {
+    this.group.forEach($el => $el.css(styles))
+    this.current.focus()
+  }
 }

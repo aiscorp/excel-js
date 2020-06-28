@@ -118,9 +118,13 @@ class Dom {
     Object.keys(styles).forEach(key => {
       this.$el.style[key] = styles [key]
     })
+  }
 
-
-    // this.$el
+  getStyles(styles = []) {
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
   }
 }
 

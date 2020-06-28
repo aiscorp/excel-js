@@ -2,12 +2,12 @@ import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/tabel/table.template'
 import {resizeHandler} from '@/components/tabel/table.resize'
 import {
-  findByCoords, isCellClick, isResize, nextSelector
+  findByCoords, isCellClick, isResize, nextSelector, stateToStyle, styleToState
 } from '@/components/tabel/table.functions'
 import {TableSelection} from '@/components/tabel/TableSelection'
 import {selectHandler} from '@/components/tabel/table.select'
-import {TABLE_RESIZE} from '@/redux/types'
 import * as actions from '@/redux/action'
+import {defaultStyles} from '@/constants'
 
 
 export class Table extends ExcelComponent {
@@ -43,6 +43,12 @@ export class Table extends ExcelComponent {
       this.selectCell($nextCell)
       this.updateCellInStore()
     })
+
+    this.$on('toolbar:stateChange', state => {
+      this.selection.applyStyles(stateToStyle(state))
+      // !!! NEED TO Future refactor - 50/50%
+      this.$dispatch(actions.tableStyleChange(state))
+    })
   }
 
   toHTML() {
@@ -60,9 +66,13 @@ export class Table extends ExcelComponent {
       // Selection cells
     } else if (isCellClick(event)) {
       selectHandler(this.$root, event, this.selection)
-
+      // !!!!!!!!!!  selectCell($cell) ISN'T WORKING HEAR - NEED TO CORRECT
       this.$emit('table:textChange', this.selection.current.text())
-
+      //
+      const state = styleToState(this.selection.current
+        .getStyles(Object.keys(defaultStyles)))
+      this.$dispatch(actions.tableStyleChange(state))
+      //
       this.updateCellInStore()
     }
   }
@@ -109,7 +119,9 @@ export class Table extends ExcelComponent {
   selectCell($cell) {
     this.selection.select($cell)
     this.$emit('table:textChange', $cell.text())
-    this.$dispatch({type: 'table:textChange'})
+
+    const state = styleToState($cell.getStyles(Object.keys(defaultStyles)))
+    this.$dispatch(actions.tableStyleChange(state))
   }
 
   async resizeTable(event) {

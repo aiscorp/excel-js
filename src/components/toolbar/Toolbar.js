@@ -1,7 +1,8 @@
 import {ExcelStateComponent} from '@core/ExcelStateComponent'
 import {createToolbar} from '@/components/toolbar/toolbar.template'
 import {$} from '@core/dom'
-import {initialState} from '@/redux/initialState'
+import {defaultStyles} from '@/constants'
+import {styleToState} from '@/components/tabel/table.functions'
 
 export class Toolbar extends ExcelStateComponent {
   static className = 'excel__toolbar'
@@ -10,15 +11,13 @@ export class Toolbar extends ExcelStateComponent {
     super($root, {
       name: 'Toolbar',
       listeners: ['click', 'dblclick'],
+      subscribe: ['currentStyles'],
       ...options
     })
   }
 
   prepare() {
-    const initialState = {
-      'cell-left': true,
-      'cell-bold': true
-    }
+    const initialState = styleToState(defaultStyles)
     this.initState(initialState)
   }
 
@@ -30,13 +29,16 @@ export class Toolbar extends ExcelStateComponent {
     return this.template
   }
 
+  storeChanged({currentStyles}) {
+    this.setState(currentStyles)
+  }
+
   onClick(event) {
     const $target = $(event.target)
+    
     if ($target.data.type === 'button') {
-
       const action = $target.data.action
-      const prevState = this.state[$target.data.action] ? true : false
-      console.log($target.data.action, prevState)
+      const prevState = !!this.state[$target.data.action]
 
       switch (action) {
         case 'cell-left':
@@ -59,6 +61,7 @@ export class Toolbar extends ExcelStateComponent {
         default:
           console.log('Action not found: ' + $target.data.action)
       }
+      this.$emit('toolbar:stateChange', this.state)
     }
   }
 
@@ -69,8 +72,8 @@ export class Toolbar extends ExcelStateComponent {
 // changing to ON or OFF state (true/false)
   toggle(action, prevState) {
     this.setState({[action]: !prevState})
-    console.log(this.state, action, prevState)
   }
+
   // changing to ON or OFF state (true/false)
   toggleLeftRightCenter(action, prevState) {
     // if prevState = TRUE, we don't need to switch
@@ -90,7 +93,6 @@ export class Toolbar extends ExcelStateComponent {
           break
       }
     }
-    console.log(this.state, action, prevState)
   }
 }
 

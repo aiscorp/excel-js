@@ -8,10 +8,19 @@ export function tableResize(data) {
   }
 }
 
-// tableResize action creator
+//
 export function tableTextChange(value) {
   return {
     type: types.TABLE_TEXT_CHANGE,
     data: value
   }
 }
+
+//
+export function tableStyleChange(data) {
+  return {
+    type: types.TABLE_STYLE_CHANGES,
+    data
+  }
+}
+

@@ -7,7 +7,6 @@ export function capitalize(string) {
   return string.replace(string[0], string[0].toUpperCase())
 }
 
-// !!! bug in function range() !!!
 export function range(start, end) {
   try {
     if (+start > +end) {
@@ -48,4 +47,8 @@ export function isEqual(a, b) {
     return JSON.stringify(a) === JSON.stringify(b)
   }
   return a === b
+}
+
+export function camelToDashCase(string) {
+ return string.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`)
 }

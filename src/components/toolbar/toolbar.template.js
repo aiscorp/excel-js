@@ -21,39 +21,33 @@ export function createToolbar(state) {
     {
       icon: 'format_align_left',
       action: 'cell-left',
-      active: state['cell-left'],
-      style: {textAlign: 'left'}
+      active: state['cell-left']
     },
     {
       icon: 'format_align_right',
       action: 'cell-right',
-      active: state['cell-right'],
-      style: {textAlign: 'right'}
+      active: state['cell-right']
     },
     {
       icon: 'format_align_center',
       action: 'cell-center',
-      active: state['cell-center'],
-      style: {textAlign: 'center'}
+      active: state['cell-center']
     },
     {type: 'spacer'},
     {
       icon: 'format_bold',
       action: 'cell-bold',
-      active: state['cell-bold'],
-      style: {fontWeight: 'bold'}
+      active: state['cell-bold']
     },
     {
       icon: 'format_italic',
       action: 'cell-italic',
-      active: state['cell-italic'],
-      style: {fontStyle: 'italic'}
+      active: state['cell-italic']
     },
     {
       icon: 'format_underlined',
       action: 'cell-underline',
-      active: state['cell-underline'],
-      style: {textDecoration: 'underline'}
+      active: state['cell-underline']
     },
     {type: 'spacer'},
     {
