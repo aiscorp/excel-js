@@ -6,6 +6,7 @@
   left: 0;
   right: 0;
   top: $table-top;
+  height: $table-height;
   overflow-x: auto;
   padding-bottom: 2px;
   user-select: none;
@@ -91,7 +92,6 @@
     height: 100%;
     white-space: nowrap;
     outline: none;
-    //user-select: none;
 
 
     &.selected {

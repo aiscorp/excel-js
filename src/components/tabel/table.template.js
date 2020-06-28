@@ -95,7 +95,7 @@ function withColState(state, row) {
   return function({val, style, index}) {
     return {
       val, style, index, row,
-      width: (state.colState[index + 1] + 'px') || ''
+      width: state.colState[index + 1] ? (state.colState[index + 1] + 'px') : ''
     }
   }
 }
@@ -103,7 +103,7 @@ function withColState(state, row) {
 function withRowState(state, row, content) {
   return {
     index: row,
-    height: (state.rowState[row] + 'px') || '',
+    height: state.rowState[row] ? (state.rowState[row] + 'px') : '20px',
     content
   }
 }

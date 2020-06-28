@@ -9,6 +9,7 @@ $formula-top: $header-height + $toolbar-height;
 $info-cell-width: 40px;
 
 $table-top: $header-height + $toolbar-height + $formula-height;
+$table-height: calc(100vh - #{$table-top});
 $row-height: 24px;
 
 $cell-width: 100px;

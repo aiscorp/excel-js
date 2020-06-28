@@ -1,5 +1,5 @@
 import {storage} from '@core/utils'
-import {defaultStyles} from '@/constants'
+import {defaultStyles, defaultTitle} from '@/constants'
 
 const defaultState = {
   colState: {},
@@ -7,7 +7,8 @@ const defaultState = {
   cellState: {}, // [row:col]: data
   stylesState: {}, // [row:col]: data
   currentStyles: defaultStyles,
-  currentText: ''
+  currentText: '',
+  title: defaultTitle
 }
 
 const normalize = state => ({

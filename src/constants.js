@@ -7,3 +7,5 @@ export const defaultStyles = {
   color: 'black',
   background: 'white'
 }
+
+export const defaultTitle = 'New table #1'

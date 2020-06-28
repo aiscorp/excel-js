@@ -32,3 +32,10 @@ export function tableStyleApply(data) {
   }
 }
 
+//
+export function titleChange(value) {
+  return {
+    type: types.TITLE_CHANGE,
+    data: value
+  }
+}
