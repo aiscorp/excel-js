@@ -2,11 +2,6 @@ import {range} from '@core/utils'
 
 export function isResize(event) {
   return !!event.target.dataset.resize
-  // code in bottom the same 
-  // if (event.target.dataset.resize) {
-  //   return true
-  // }
-  // return false
 }
 
 export function isCellClick(event) {
@@ -57,4 +52,82 @@ export function nextSelector(key, {row, col}) {
       break
   }
   return {row, col}
+}
+
+export function stateToStyle(state) {
+  const styles = {}
+  Object.keys(state).forEach(key => {
+    switch (key) {
+      case 'cell-left':
+        state[key] ? styles.textAlign = 'left' : ''
+        break
+      case 'cell-right':
+        state[key] ? styles.textAlign = 'right' : ''
+        break
+      case 'cell-center':
+        state[key] ? styles.textAlign = 'center' : ''
+        break
+      case 'cell-bold':
+        state[key] ? styles.fontWeight = 'bold' : styles.fontWeight = 'normal'
+        break
+      case 'cell-italic':
+        state[key] ? styles.fontStyle = 'italic' : styles.fontStyle = 'normal'
+        break
+      case 'cell-underline':
+        state[key] ? styles.textDecoration = 'underline' :
+          styles.textDecoration = 'none'
+        break
+      case 'cell-border':
+        state[key] ? styles.border = '2px solid black' :
+          styles.border = ''
+        break
+      case 'cell-color':
+        state[key] ? styles.backgroundColor = '#8ec29a' :
+          styles.backgroundColor = '#fff'
+        break
+      case 'cell-erase':
+        break
+    }
+  })
+  return styles
+}
+
+export function styleToState(styles) {
+  const state = {}
+  Object.keys(styles).forEach(key => {
+    switch (key) {
+      case 'textAlign':
+        styles[key] === 'left' ? state['cell-left'] = true :
+          state['cell-left'] = false
+        styles[key] === 'right' ? state['cell-right'] = true :
+          state['cell-right'] = false
+        styles[key] === 'center' ? state['cell-center'] = true :
+          state['cell-center'] = false
+        break
+      case 'fontWeight':
+        styles[key] === 'bold' ? state['cell-bold'] = true :
+          state['cell-bold'] = false
+        break
+      case 'fontStyle':
+        styles[key] === 'italic' ? state['cell-italic'] = true :
+          state['cell-italic'] = false
+        break
+      case 'textDecoration':
+        styles[key] === 'underline' ? state['cell-underline'] = true :
+          state['cell-underline'] = false
+        break
+      case 'border':
+        styles[key] === '2px solid black' ? state['cell-border'] = true :
+          state['cell-border'] = false
+        break
+      case 'backgroundColor':
+        console.log(styles[key])
+        styles[key] === 'rgb(142, 194, 154)' ? state['cell-color'] = true :
+          state['cell-color'] = false
+        break
+      case 'cell-erase':
+        break
+    }
+  })
+  return state
 }

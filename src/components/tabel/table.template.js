@@ -1,11 +1,14 @@
-const CODES = {
-  A: 65,
-  Z: 90
-}
+import {defaultStyles} from '@/constants'
+import {toInlineStyles} from '@core/utils'
+import {stateToStyle} from '@/components/tabel/table.functions'
 
+const CODES = {
+  A: 65, Z: 90
+}
 const COLS = CODES.Z - CODES.A + 1
 
-export function createTable(rowsCount = 60) {
+export function createTable(state = {}) {
+  const rowsCount = 60
   const colsCount = COLS
   const rows = []
 
@@ -16,27 +19,34 @@ export function createTable(rowsCount = 60) {
       cols = new Array(colsCount)
         .fill('')
         .map(toHeaderChar)
+        .map(withColState(state, row))
         .map(createCol)
         .join('')
     } else {
       cols = new Array(colsCount)
         .fill('')
-        // .map((col = '', index) =>
-        //   createCell(col, index, row))
-        .map(createCell(row))
+        .map(withCellState(state, row))
+        .map(withColState(state, row))
+        .map(createCell)
         .join('')
     }
-    rows.push(createRow(row, cols))
+    rows.push(createRow(withRowState(state, row, cols)))
   }
 
   return rows.join('')
 }
 
-function createRow(index, content) {
+function createRow({index, height, content}) {
   const resizer = index ?
-    '<div class="row-resize" data-resize="row"></div>' : ''
+    `<div class="row-resize" 
+          data-resize="row">            
+     </div>` :
+    ''
   return `
-    <div class="row" data-type="resizable">
+    <div class="row" 
+         style="height: ${height}"
+         data-type="resizable" 
+         data-row="${index}">
         <div class="row-info">
         ${index === 0 ? '' : index}        
         ${resizer}
@@ -48,32 +58,64 @@ function createRow(index, content) {
   `
 }
 
-function createCol(col, index) {
+function createCol({val, index, row, width}) {
   return `
-    <div class="column" data-type="resizable" data-col="${index+1}">
-        ${col}
+    <div class="column" style="width: ${width}"
+        data-type="resizable" data-col="${index + 1}">
+        ${val}
         <div class="col-resize" data-resize="col"></div>
     </div>
   `
 }
 
-function createCell(row) {
-  return function(cell, col) {
+function createCell({val, style, index, row, width}) {
+  const styles = toInlineStyles(style ? stateToStyle(style) : defaultStyles)
     return `
-    <div class="cell" contenteditable 
-        data-col="${col+1}" 
+    <div class="cell" contenteditable
+        style="${styles}; width: ${width}"
+        data-col="${index + 1}" 
         data-row="${row}"
         data-type="cell">
-        ${cell}${row}:${col+1}
+        ${val}
     </div>
   `
-  }
 }
 
 function toHeaderChar(_, index) {
   if (typeof index !== 'number' || index > COLS) {
     return 'Err'
   }
-
-  return String.fromCharCode(CODES.A + index)
+  return {
+    val: String.fromCharCode(CODES.A + index),
+    index
+  }
 }
+
+function withColState(state, row) {
+  return function({val, style, index}) {
+    return {
+      val, style, index, row,
+      width: state.colState[index + 1] ? (state.colState[index + 1] + 'px') : ''
+    }
+  }
+}
+
+function withRowState(state, row, content) {
+  return {
+    index: row,
+    height: state.rowState[row] ? (state.rowState[row] + 'px') : '',
+    content
+  }
+}
+
+function withCellState(state, row) {
+  return function(val, index) {
+    const id = row + ':' + (+index+1)
+    return {
+      val: (state.cellState[id]) || '',
+      style: (state.stylesState[id]) || '',
+      index
+    }
+  }
+}
+

@@ -1,10 +1,14 @@
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/tabel/table.template'
 import {resizeHandler} from '@/components/tabel/table.resize'
-import {findByCoords, isCellClick, isResize, nextSelector
+import {
+  findByCoords, isCellClick, isResize, nextSelector, stateToStyle, styleToState
 } from '@/components/tabel/table.functions'
 import {TableSelection} from '@/components/tabel/TableSelection'
 import {selectHandler} from '@/components/tabel/table.select'
+import * as actions from '@/redux/action'
+import {defaultStyles} from '@/constants'
+
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -19,30 +23,49 @@ export class Table extends ExcelComponent {
 
   prepare() {
     this.selection = new TableSelection()
+
+
   }
 
   init() {
     super.init()
 
+    // select first el
     this.selection
       .select(findByCoords(this.$root, {row: 1, col: 1}))
     this.$emit('table:textChange', this.selection.current.text())
+    // select it on toolbar
+    const state = styleToState(this.selection.current
+      .getStyles(Object.keys(defaultStyles)))
+    this.$dispatch(actions.tableStyleChange(state))
+
 
     this.$on('formula:input', input => {
       this.selection.current.text(input)
-      console.log('Table from Formula', input)
+      this.updateCellInStore()
     })
 
     this.$on('formula:done', key => {
       const $nextCell = findByCoords(this.$root,
         nextSelector(key, this.selection.current.id()))
-      this.selection.select($nextCell)
-      this.$emit('table:textChange', this.selection.current.text())
+      this.selectCell($nextCell)
+      this.updateCellInStore()
+    })
+
+    this.$on('toolbar:stateChange', state => {
+      this.selection.applyStyles(stateToStyle(state))
+      // ???
+      this.$dispatch(actions.tableStyleChange(state))
+      //
+      this.$dispatch(actions.tableStyleApply({
+        value: state,
+        ids: this.selection.selectedIds
+      }))
     })
   }
 
   toHTML() {
-    return createTable()
+    return createTable(this.store.getState())
   }
 
   /* EVENT
@@ -51,15 +74,20 @@ export class Table extends ExcelComponent {
   onMousedown(event) {
     // Resize cols and rows
     if (isResize(event)) {
-      resizeHandler(this.$root, event)
+      this.resizeTable(event)
       //
       // Selection cells
     } else if (isCellClick(event)) {
       selectHandler(this.$root, event, this.selection)
-
+      // !!!!!!!!!!  selectCell($cell) ISN'T WORKING HEAR - NEED TO CORRECT
       this.$emit('table:textChange', this.selection.current.text())
+      //
+      const state = styleToState(this.selection.current
+        .getStyles(Object.keys(defaultStyles)))
+      this.$dispatch(actions.tableStyleChange(state))
+      //
+      this.updateCellInStore()
     }
-    console.log(event)
   }
 
   /* EVENT
@@ -78,20 +106,45 @@ export class Table extends ExcelComponent {
       event.preventDefault()
       const $nextCell = findByCoords(this.$root,
         nextSelector(key, this.selection.current.id()))
-      this.selection.select($nextCell)
-      this.$emit('table:textChange', this.selection.current.text())
-      console.log(key)
+      this.selectCell($nextCell)
     }
+    this.updateCellInStore()
   }
 
   /* EVENT
    * ---- onKeyDown -----
    * */
   onInput(event) {
-    this.$emit('table:textChange', this.selection.current.text())
+    // this.$emit('table:textChange', this.selection.current.text())
+    this.updateCellInStore()
   }
 
-  // functions helpers
+  /*
+   * functions helpers
+   */
+  updateCellInStore() {
+    this.$dispatch(actions.tableTextChange({
+      id: this.selection.current.id(),
+      value: this.selection.current.text()
+    }))
+  }
+
+  selectCell($cell) {
+    this.selection.select($cell)
+    this.$emit('table:textChange', $cell.text())
+
+    const state = styleToState($cell.getStyles(Object.keys(defaultStyles)))
+    this.$dispatch(actions.tableStyleChange(state))
+  }
+
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler(this.$root, event)
+      this.$dispatch(actions.tableResize(data))
+    } catch (e) {
+      console.warn('Resize error:', e)
+    }
+  }
 }
 
 

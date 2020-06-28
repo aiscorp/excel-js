@@ -1,3 +1,5 @@
+/* Pattern: Facade
+* */
 export class Emitter {
   constructor() {
     this.listeners = {}

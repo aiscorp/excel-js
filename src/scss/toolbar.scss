@@ -18,4 +18,8 @@
   .button {
     @include button(green);
   }
+
+  .spacer {
+    @include spacer();
+  }
 }

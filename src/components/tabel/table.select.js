@@ -3,7 +3,6 @@ import {isGroupSelection, matrix} from '@/components/tabel/table.functions'
 
 export function selectHandler($root, event, selection) {
   const $target = $(event.target)
-  console.log('Selection started', $target)
 
   // group selection
   if (event.shiftKey) {
@@ -21,15 +20,11 @@ export function selectHandler($root, event, selection) {
   // ---- onMouseUp ----
   document.onmouseup = e => {
     const $current = $(e.target)
-    console.log('Selection, onMouseUp()', $current)
-    // deleting "onmousemove" event
+    // deleting mouse events
     document.onmousemove = null
     document.onmouseup = null
 
-    console.log($current.id(), $target.id())
     if (isGroupSelection($current, $target)) {
-      console.log('Selection group()')
-
       const $cells = matrix($current, selection.current)
         .map(aac => $root
           .find(`.cell[data-col="${aac.col}"][data-row="${aac.row}"]`))

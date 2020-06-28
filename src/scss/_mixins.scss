@@ -6,6 +6,7 @@
   position: relative;
   display: inline-block;
   color: rgba(0, 0, 0, .7);
+  user-select: none;
 
   & > i {
     font-size: 18px;
@@ -19,6 +20,19 @@
     background: #eee;
     cursor: pointer;
   }
+
+}
+
+@mixin spacer() {
+  height: 24px;
+  min-width: 1px;
+  width: 1px;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding: 0;
+
+  display: inline-block;
+  background: $border-color
 
 }
 

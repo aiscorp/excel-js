@@ -6,6 +6,7 @@
   left: 0;
   right: 0;
   top: $table-top;
+  height: $table-height;
   overflow-x: auto;
   padding-bottom: 2px;
   user-select: none;
@@ -55,7 +56,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 40px;
+    min-width: $cell-min-width;
     width: $cell-width;
     height: 100%;
     border: 1px solid $border-color;
@@ -82,7 +83,7 @@
   }
 
   .cell {
-    min-width: 40px;
+    min-width: $cell-min-width;
     width: $cell-width;
     padding: 5px;
     border: 1px solid $cell-color;
@@ -99,7 +100,7 @@
       //outline: 2px solid red;
       border: 1px solid $primary-color;
       background: $cell-bg-color-hover;
-      //z-index: -1;
+      z-index: 1;
     }
 
     &:hover {
