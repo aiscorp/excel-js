@@ -121,7 +121,6 @@ export function styleToState(styles) {
           state['cell-border'] = false
         break
       case 'backgroundColor':
-        console.log(styles[key])
         styles[key] === 'rgb(142, 194, 154)' ? state['cell-color'] = true :
           state['cell-color'] = false
         break
