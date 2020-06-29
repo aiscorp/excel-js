@@ -1,4 +1,4 @@
-import {formatDate, storage} from '@core/utils'
+import {storage} from '@core/utils'
 
 export function listElement(k) {
   const model = storage(k)
@@ -8,7 +8,7 @@ export function listElement(k) {
   return `
     <li class="dash-board__record">
       <a href="#excel/${id}">${model.title}</a>
-      <strong>${date}</strong>
+      <strong>${date.toLocaleString()}</strong>
     </li>
   `
 }

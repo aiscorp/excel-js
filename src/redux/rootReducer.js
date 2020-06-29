@@ -1,5 +1,4 @@
 import * as types from '@/redux/types'
-import {toInlineStyles} from '@core/utils'
 
 export function rootReducer(state, action) {
   let prevState
@@ -42,7 +41,11 @@ export function rootReducer(state, action) {
     case types.TITLE_CHANGE:
       return {...state, title: action.data}
 
-    default: return state
+    case types.UPDATE_DATE:
+      return {...state, lastDate: new Date().toJSON()}
+
+    default:
+      return state
   }
 }
 

@@ -39,3 +39,10 @@ export function titleChange(value) {
     data: value
   }
 }
+
+//
+export function updateDate() {
+  return {
+    type: types.UPDATE_DATE
+  }
+}
