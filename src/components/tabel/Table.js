@@ -25,8 +25,6 @@ export class Table extends ExcelComponent {
 
   prepare() {
     this.selection = new TableSelection()
-
-
   }
 
   init() {
