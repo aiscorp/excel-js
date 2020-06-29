@@ -100,3 +100,7 @@ export function formatDate(date) {
 
   return dd + '.' + mm + '.' + yy;
 }
+
+export function preventDefault(e) {
+  e.preventDefault()
+}
