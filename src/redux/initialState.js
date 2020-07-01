@@ -1,4 +1,4 @@
-import {clone, storage} from '@core/utils'
+import {clone} from '@core/utils'
 import {defaultStyles, defaultTitle} from '@/constants'
 
 const defaultState = {

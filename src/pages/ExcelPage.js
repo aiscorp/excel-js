@@ -1,29 +1,36 @@
-import {Page} from '@core/Page'
+import {ErrorPage} from '@/pages/ErrorPage'
+import {Page} from '@core/page/Page'
 import {Excel} from '@/components/excel/Excel'
 import {Header} from '@/components/header/Header'
 import {Toolbar} from '@/components/toolbar/Toolbar'
 import {Formula} from '@/components/formula/Formula'
 import {Table} from '@/components/tabel/Table'
+//
 import {createStore} from '@core/createStore'
-import {debounce, storage} from '@core/utils'
 import {rootReducer} from '@/redux/rootReducer'
 import {normalizeInitialState} from '@/redux/initialState'
-import {ErrorPage} from '@/pages/ErrorPage'
-
+import {StateProcessor} from '@core/page/StateProcessor'
+import {LocalStorageClient} from '@/storage/LocalStorageClient'
+//
 
 export class ExcelPage extends Page {
-  getRoot() {
-    console.log(this.params)
+  constructor(param) {
+    super(param)
+    const tableId = this.params
+
+    this.storeSub = null
+    this.processor = new StateProcessor(
+      new LocalStorageClient(tableId), 500
+    )
+  }
+
+  async getRoot() {
     if (this.params && this.params.length > 8) {
-      const params = this.params // ? this.params : Date.now().toString(16)
-      const state = storage(storageName(params))
+
+      const state = await this.processor.get()
       const store = createStore(rootReducer, normalizeInitialState(state))
 
-      const stateListener = debounce(state => {
-        storage(storageName(params), state)
-      }, 500)
-
-      store.subscribe(stateListener)
+      this.storeSub = store.subscribe(this.processor.listen)
 
       this.excel = new Excel({
         components: [Header, Toolbar, Formula, Table],
@@ -37,15 +44,13 @@ export class ExcelPage extends Page {
   }
 
   afterRender() {
-    // console.log(this.excel instanceof ErrorPage)
     this.excel.init()
   }
 
   destroy() {
     this.excel.destroy()
+    this.storeSub.unsubscribe()
   }
 }
 
-function storageName(param) {
-  return 'excel:' + param
-}
+
