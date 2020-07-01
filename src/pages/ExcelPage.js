@@ -11,6 +11,7 @@ import {rootReducer} from '@/redux/rootReducer'
 import {normalizeInitialState} from '@/redux/initialState'
 import {StateProcessor} from '@core/page/StateProcessor'
 import {LocalStorageClient} from '@/storage/LocalStorageClient'
+import {FireBaseStorageClient} from '@/storage/FireBaseStorageClient'
 //
 
 export class ExcelPage extends Page {
@@ -20,14 +21,15 @@ export class ExcelPage extends Page {
 
     this.storeSub = null
     this.processor = new StateProcessor(
-      new LocalStorageClient(tableId), 500
-    )
+      // new LocalStorageClient(tableId), 500)
+      new FireBaseStorageClient(tableId), 200)
   }
 
   async getRoot() {
     if (this.params && this.params.length > 8) {
 
       const state = await this.processor.get()
+      console.log(state)
       const store = createStore(rootReducer, normalizeInitialState(state))
 
       this.storeSub = store.subscribe(this.processor.listen)

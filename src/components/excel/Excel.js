@@ -34,7 +34,6 @@ export class Excel {
   init() {
     if (process.env.NODE_ENV === 'production') {
       document.addEventListener('contextmenu', preventDefault)
-
     }
     //
     this.store.dispatch(updateDate())

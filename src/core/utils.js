@@ -103,3 +103,11 @@ export function formatDate(date) {
 export function preventDefault(e) {
   e.preventDefault()
 }
+
+export function isLoginValid(login) {
+
+}
+
+export function isPasswordValid(login) {
+
+}
