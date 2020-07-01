@@ -1,6 +1,4 @@
 // Makes first letter upper case
-import {defaultStyles} from '@/constants'
-
 export function capitalize(string) {
   if (typeof string !== 'string') {
     return ''
@@ -36,6 +34,7 @@ export function parseCellId(textId) {
 }
 
 // storage GET/SET
+// NEED TO DELETE !!!!
 export function storage(key, data = null) {
   if (!data) {
     return JSON.parse(localStorage.getItem(key))

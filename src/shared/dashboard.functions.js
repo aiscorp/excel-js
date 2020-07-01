@@ -1,6 +1,7 @@
 import {storage} from '@core/utils'
 
 export function listElement(k) {
+  // NEED TO REFACTOR TO USE StateProcessor
   const model = storage(k)
   const id = k.split(':')[1]
   const date = new Date(model.lastDate)
