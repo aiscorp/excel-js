@@ -1,8 +1,8 @@
 @import "variables";
 
-@mixin button($color: green) {
-  height: 24px;
-  min-width: 24px;
+@mixin button($color: green, $size: 24px) {
+  height: $size;
+  min-width: $size;
   padding: 3px;
   text-align: center;
   position: relative;
@@ -11,7 +11,7 @@
   user-select: none;
 
   & > i {
-    font-size: 18px;
+    font-size: $size - 6px;
   }
 
   &:active, &.active  {

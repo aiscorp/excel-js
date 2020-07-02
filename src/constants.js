@@ -1,3 +1,4 @@
+//
 export const defaultStyles = {
   textAlign: 'left',
   fontWeight: 'normal',
@@ -10,4 +11,8 @@ export const defaultStyles = {
   // border: '1px solid black'
 }
 
+//
 export const defaultTitle = 'New table #1'
+
+//
+export const API_KEY = 'AIzaSyCaTbgnfcHfMtj_KCW2DCGw7aA-fOeMmVc'

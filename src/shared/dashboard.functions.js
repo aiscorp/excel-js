@@ -1,4 +1,5 @@
 import {storage} from '@core/utils'
+import {isEmail} from '@core/auth/auth.functions'
 
 export function listElement(model, id, user) {
   // NEED TO REFACTOR TO USE StateProcessor
@@ -89,5 +90,42 @@ export function createRecordsTable(state, user) {
        ${keys.length ? list : empty}
     </div>
   `
+}
+
+export function createLogin(auth) {
+  const form = `
+      <div class="login-form">
+          <h3>Please login:</h3>
+          <p>Email:</p>
+          <input type="text" class="email"/>
+          <p>Password:</p>
+          <input type="text" class="password"/>
+          <button class="auth" data-action="login">Login</button> 
+          <button class="register" data-action="register">Register</button> 
+      </div>`
+
+  const logoutBtn = `
+      <div class="logout-button" data-action="logout">
+          <i class="material-icons" 
+              data-action="logout">login</i>
+      </div>`
+
+  const login = `
+    <div class="login">
+      <div class="user">
+          <p class="user-name">${auth.email}</p>
+          ${logoutBtn}    
+      </div>
+    </div>`
+
+  const noLogin = `
+    <div class="login">
+      <div class="user">
+          <p class="user-name">Login...</p>      
+      </div>      
+      ${form} 
+    </div>`
+
+  return isEmail(auth.email) ? login : noLogin
 }
 

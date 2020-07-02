@@ -93,9 +93,7 @@ function createButton(element) {
 }
 
 const colorPicker = `
-    
-    <p>Text color</p>
-    <div class="row">
+  <div class="row">
     <div class="button" data-action="color#a51c00">
         <i class="material-icons" style="color: #ca0000" 
            data-action="color#a51c00">stop_circle</i></div>
@@ -111,8 +109,8 @@ const colorPicker = `
     <div class="button" data-action="color#a51c00">
         <i class="material-icons" style="color: #9800fd" 
            data-action="color#a51c00">stop_circle</i></div>
-           </div>
-           <div class="row">
+  </div>                      
+  <div class="row">
     <div class="button" data-action="color#a51c00">
         <i class="material-icons" style="color: #fd00fd" 
            data-action="color#a51c00">stop_circle</i></div>
@@ -129,42 +127,5 @@ const colorPicker = `
         <i class="material-icons" 
             style="color: #fdfdfd; text-shadow: 0px 0px 1px grey" 
            data-action="color#a51c00">stop_circle</i></div>    
-    </div>
-    <div class="br"></div>
-    <p>Background color</p>
-    <div class="row">
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #ca0000" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #e49038" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #69a74e" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #3c77d6" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #9800fd" 
-           data-action="color#a51c00">stop_circle</i></div>
-                      </div>                      
-           <div class="row">
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #fd00fd" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #000000" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #989898" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" style="color: #d7d7d7" 
-           data-action="color#a51c00">stop_circle</i></div>
-    <div class="button" data-action="color#a51c00">
-        <i class="material-icons" 
-            style="color: #fdfdfd; text-shadow: 0px 0px 1px grey" 
-           data-action="color#a51c00">stop_circle</i></div>    
-    </div>
+  </div>
 `

@@ -27,7 +27,7 @@ export class FireBaseStorageClient {
     if (!data) {
       // Getter
       const response = await fetch(this.dbUrl + key)
-      console.log(response, this.dbUrl + key)
+      // console.log(response, this.dbUrl + key)
       return response.json()
     }
      // Setter
@@ -44,7 +44,7 @@ export class FireBaseStorageClient {
   storageName(param, user) {
     const storageName = param === '' ?
       user + '.json' : user + '/' + param + '.json'
-    console.log(storageName)
+    // console.log(storageName)
     return storageName
   }
 }
