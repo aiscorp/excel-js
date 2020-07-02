@@ -16,10 +16,10 @@ const defaultState = {
 
 const normalize = state => ({
   ...state,
-  colState: {},
-  rowState: {},
-  cellState: {},
-  stylesState: {},
+  // colState: {},
+  // rowState: {},
+  // cellState: {},
+  // stylesState: {},
   lastDate: '',
   currentStyles: defaultStyles,
   currentText: ''

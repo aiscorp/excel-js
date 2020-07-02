@@ -68,19 +68,17 @@ export function listEmpty() {
 // }
 
 function getAllKeysDB(state) {
-  return Object.keys(state)
+  return state ? Object.keys(state) : []
 }
 
 export function createRecordsTable(state, user) {
   const empty = `<ul class="dash-board__list">${listEmpty()}</ul>`
   const keys = getAllKeysDB(state)
-  console.log(keys)
-  console.log()
-  keys.map(k => console.log(state[k]))
-
-  if (!keys.length) {
-    return empty
-  }
+  const list = `
+    <ul class="dash-board__list">
+        ${keys.map(k => listElement(state[k], k, user)).join('')}
+    </ul>  
+  `
 
   return `
     <div class="dash-board__table">
@@ -88,9 +86,7 @@ export function createRecordsTable(state, user) {
         <span>Name</span>
         <span>Last date</span>
       </div> 
-      <ul class="dash-board__list">
-        ${keys.map(k => listElement(state[k], k, user)).join('')}
-      </ul>        
+       ${keys.length ? list : empty}
     </div>
   `
 }
