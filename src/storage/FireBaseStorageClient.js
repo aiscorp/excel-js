@@ -1,6 +1,6 @@
 
 export class FireBaseStorageClient {
-  constructor(param, user = 'guest', dbUrl = '') {
+  constructor(param = '', user = 'guest', dbUrl = '') {
     this.name = this.storageName(param, user)
     // this.dbUrl = dbUrl
     // this.dbUrl = dbUrl !== '' ? dbUrl : 'https://excel-js-aisc.firebaseio.com/'
@@ -26,30 +26,25 @@ export class FireBaseStorageClient {
    async storage(key, data = null) {
     if (!data) {
       // Getter
-      const response = await fetch(this.dbUrl + this.name, {
-        method: 'GET',
-        body: null,
-        headers: {},
-        mode: 'no-cors'
-      })
-      console.log(response)
-      return response.body
+      const response = await fetch(this.dbUrl + key)
+      console.log(response, this.dbUrl + key)
+      return response.json()
     }
      // Setter
-     const response = await fetch(this.dbUrl + this.name, {
+     const response = await fetch(this.dbUrl + key, {
        method: 'PUT',
        body: JSON.stringify(data),
        headers: {
          'Content-Type': 'application/json',
          'Access-Control-Allow-Origin': 'http://localhost:3000'
        }
-       // mode: 'no-cors'
      })
-       // .then(response => response.json())
-       // .then(response => console.log(response))
   }
 
   storageName(param, user) {
-    return user + '/' + param + '.json'
+    const storageName = param === '' ?
+      user + '.json' : user + '/' + param + '.json'
+    console.log(storageName)
+    return storageName
   }
 }

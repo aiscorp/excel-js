@@ -29,15 +29,23 @@ export class Router {
     if (this.page) {
       this.page.destroy()
     }
+    let Page
 
     this.$placeholder
       .clear()
       .append(this.loader)
 
-    const Page = ActiveRoute.path.includes('excel') ?
-      this.routes.excel : this.routes.dashboard
-
-    this.page = new Page(ActiveRoute.param)
+    if (ActiveRoute.path.includes('excel')) {
+      Page = this.routes.excel
+      console.log(ActiveRoute.param)
+      this.page = new Page(ActiveRoute.param[2])
+    } else {
+      Page = this.routes.dashboard
+      this.page = new Page('guest')
+    }
+    // const Page = ActiveRoute.path.includes('excel') ?
+    //   this.routes.excel : this.routes.dashboard
+    // this.page = new Page(ActiveRoute.param)
 
     const root = await this.page.getRoot()
 

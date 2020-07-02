@@ -29,9 +29,9 @@ export class ExcelPage extends Page {
     if (this.params && this.params.length > 8) {
 
       const state = await this.processor.get()
-      console.log(state)
-      const store = createStore(rootReducer, normalizeInitialState(state))
 
+      const store = createStore(rootReducer, normalizeInitialState(state))
+      console.log(state, store)
       this.storeSub = store.subscribe(this.processor.listen)
 
       this.excel = new Excel({
