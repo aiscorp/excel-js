@@ -100,13 +100,15 @@ export function createLogin(auth) {
           <input type="text" class="email"/>
           <p>Password:</p>
           <input type="text" class="password"/>
-          <button class="auth" data-action="login">Login</button> 
-          <button class="register" data-action="register">Register</button> 
+          <button class="auth" id="login"
+            data-action="login">Login</button> 
+          <button class="register"
+            data-action="register">Register</button> 
       </div>`
 
   const logoutBtn = `
       <div class="logout-button" data-action="logout">
-          <i class="material-icons" 
+          <i class="material-icons"
               data-action="logout">login</i>
       </div>`
 
@@ -129,3 +131,14 @@ export function createLogin(auth) {
   return isEmail(auth.email) ? login : noLogin
 }
 
+export function clickLogin(e) {
+  e.preventDefault()
+  console.log('clickLogin()')
+}
+
+export function clickLogout(e) {
+  e.preventDefault()
+  console.log('clickLogout()')
+  // eslint-disable-next-line no-invalid-this
+  this.logout()
+}

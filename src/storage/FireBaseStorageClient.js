@@ -1,9 +1,8 @@
 
 export class FireBaseStorageClient {
-  constructor(param = '', user = 'guest', dbUrl = '') {
-    this.name = this.storageName(param, user)
-    // this.dbUrl = dbUrl
-    // this.dbUrl = dbUrl !== '' ? dbUrl : 'https://excel-js-aisc.firebaseio.com/'
+  constructor(auth, dbUrl = '') {
+    this.auth = auth
+    this.name = this.storageName('')
     this.dbUrl = dbUrl !== '' ?
       dbUrl : 'https://excel-js-aisc.firebaseio.com/'
   }
@@ -14,37 +13,58 @@ export class FireBaseStorageClient {
   }
 
    get() {
+    if (!this.isAuth()) {
+      return
+    }
+
     return new Promise(resolve => {
-      const state = this.storage(this.name)
+      const state = this.storage()
 
       setTimeout(() => {
         resolve(state)
-      }, 300)
+      }, 1000)
     })
   }
 
-   async storage(key, data = null) {
+   async storage(key = '', data = null) {
     if (!data) {
       // Getter
-      const response = await fetch(this.dbUrl + key)
-      // console.log(response, this.dbUrl + key)
+      const requestUrl =
+        `${this.dbUrl}${this.storageName(key)}?auth=${await this.token()}`
+      const response = await fetch(requestUrl)
+      //
+      console.log('storage.GET', requestUrl, response)
       return response.json()
     }
      // Setter
-     const response = await fetch(this.dbUrl + key, {
+     const requestUrl =
+       `${this.dbUrl}${this.storageName(key)}?auth=${await this.token()}`
+     const requestOpt = {
        method: 'PUT',
        body: JSON.stringify(data),
        headers: {
          'Content-Type': 'application/json',
          'Access-Control-Allow-Origin': 'http://localhost:3000'
        }
-     })
+     }
+     const response = await fetch(requestUrl, requestOpt)
+     console.log('storage.SET', response)
+     // !? add return for errors
   }
 
-  storageName(param, user) {
-    const storageName = param === '' ?
-      user + '.json' : user + '/' + param + '.json'
-    // console.log(storageName)
-    return storageName
+  storageName(key) {
+    const name = this.auth.auth.email.split('@')[0]
+    console.log('storageName(key)', key === '')
+    return key === '' ?
+      name + '.json' :
+      name + '/' + key + '.json'
+  }
+
+  async token() {
+    return await this.auth.getToken()
+  }
+
+  async isAuth() {
+    return await this.auth.authorise()
   }
 }

@@ -18,6 +18,7 @@ export async function authFireBase(email, password) {
   return await fetch(singInUrl, request)
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       return data.idToken ?
         {idToken: data.idToken, email: data.email} :
         {code: data.error.code, message: data.error.message}
