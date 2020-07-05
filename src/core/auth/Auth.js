@@ -1,5 +1,6 @@
 // Authentication by email and password by google firebase service
-// Auth data stored in localstorage
+// Auth refresh data stored in localstorage, data token in memory
+//
 import {API_KEY} from '@/constants'
 import {storage} from '@core/utils'
 
@@ -12,10 +13,9 @@ export class Auth {
       refreshToken: '',
       expiresIn: ''
     }
-
+    // try to delete this flags, may be they are extra
     this.ready = false
-
-    // return this.loadAuthFromStorage()
+    this.isRefresh = false
   }
 
   async singUp(email, password) {
@@ -173,7 +173,6 @@ export class Auth {
           // refresh every 7min (59min in prod)
         })
     }
-    // console.log('loadAuthFromStorage()', this.auth)
   }
 
   saveAuthToStorage(auth) {
@@ -182,7 +181,11 @@ export class Auth {
   }
 
   refreshTokenInExpires() {
+    if (this.isRefresh === true) {
+      return
+    }
     if (this.auth.isAuthenticate === true) {
+      this.isRefresh = true
       setTimeout(() => {
         console.log('refreshTokenInExpires()')
         this.refreshToken()

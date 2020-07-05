@@ -26,24 +26,11 @@ export class DashboardPage extends Page {
 
   async getRoot() {
     // get list of tables
-     const state = await this.processor.get()
-     console.log(state)
-
-
-    // this.auth = await authFireBase('assiscorp@yandex.ru', '021263')
-    //   .then(auth => {
-    //     console.log(auth)
-    //     this.auth = auth
-    //   })
+    const state = await this.processor.get()
+    console.log(state)
 
     // await this.auth.authenticate('00aisc@ya.ru', '123456')
     //   .then(res => console.log(res))
-
-    // await this.auth.refreshToken()
-    //   .then(res => console.log(res))
-
-    // this.auth.refreshTokenInExpires()
-
 
     // await authFireBase('aiscorp@yandex.ru', '021263')
     //   .then(auth => {
@@ -73,7 +60,6 @@ export class DashboardPage extends Page {
   afterRender() {
     document
       .getElementsByClassName('login')[0]
-      // .getElementById('login')
       .addEventListener('click', this.clickLogout)
 
 
@@ -83,7 +69,6 @@ export class DashboardPage extends Page {
   destroy() {
     document
       .getElementsByClassName('login')[0]
-      // .getElementById('login')
       .removeEventListener('click', this.clickLogout)
   }
 }
