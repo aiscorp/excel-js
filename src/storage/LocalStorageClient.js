@@ -2,7 +2,6 @@
 export class LocalStorageClient {
   constructor(name) {
     this.name = this.storageName(name)
-
   }
 
   save(state) {
@@ -17,7 +16,7 @@ export class LocalStorageClient {
 
       setTimeout(() => {
         resolve(state)
-      }, 2000)
+      }, 300)
     })
   }
 

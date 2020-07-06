@@ -87,7 +87,6 @@ export function clone(obj) {
 }
 
 export function formatDate(date) {
-
   let dd = date.getDate();
   if (dd < 10) dd = '0' + dd;
 
@@ -102,4 +101,12 @@ export function formatDate(date) {
 
 export function preventDefault(e) {
   e.preventDefault()
+}
+
+export function isLoginValid(login) {
+
+}
+
+export function isPasswordValid(login) {
+
 }

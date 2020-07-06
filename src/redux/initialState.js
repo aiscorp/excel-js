@@ -1,11 +1,13 @@
 import {clone} from '@core/utils'
 import {defaultStyles, defaultTitle} from '@/constants'
 
+const init = 'null'
+
 const defaultState = {
-  colState: {},
-  rowState: {},
-  cellState: {}, // [row:col]: data
-  stylesState: {}, // [row:col]: data
+  colState: {init},
+  rowState: {init},
+  cellState: {init}, // [row:col]: data
+  stylesState: {init}, // [row:col]: data
   currentStyles: defaultStyles,
   currentText: '',
   title: defaultTitle,
@@ -14,9 +16,13 @@ const defaultState = {
 
 const normalize = state => ({
   ...state,
+  // colState: {},
+  // rowState: {},
+  // cellState: {},
+  // stylesState: {},
+  lastDate: '',
   currentStyles: defaultStyles,
   currentText: ''
-  // lastDate: {}
 })
 
 // export const initialState = storage('excel-state') ?

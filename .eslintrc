@@ -19,7 +19,7 @@
     "no-empty": "off",
     "linebreak-style": ["error", "windows"],
     "max-len": "warn",
-    "padded-blocks": "warn",
+    "padded-blocks": "off",
     "no-multiple-empty-lines": "warn"
   },
   "extends": ["eslint:recommended", "google"]

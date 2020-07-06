@@ -6,8 +6,7 @@
 
   &__header {
     position: fixed;
-    left: 0;
-    right: 0;
+        left: 0;
     right: 0;
     top: 0;
     height: $dash-board-header-height;
@@ -17,6 +16,73 @@
     background: #fff;
     box-shadow: 0 2px 5px 2px rgba(60, 64, 67, 0.15);
     z-index: 1000;
+
+
+    .account {
+      @include button(green, 64px, 10px);
+      color: #3c74ff;
+    }
+
+    .login-form {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      width: 200px;
+      padding: 8px;
+      background: $info-bg-color;
+      right: 5px;
+      border-radius: 3px;
+      border: 1px solid $border-color;
+      color: black;
+
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+      z-index: 100;
+
+      h3, p, input, button {
+        margin: 3px;
+        padding: 3px;
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+
+      }
+    }
+
+    .login {
+      position: absolute;
+      display: block;
+      right: 0;
+      //align-items: center;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-name {
+      font-size: 16px;
+      font-style: italic;
+      color: #30b30d;
+      margin: 3px;
+      padding: 3px;
+      justify-content: center;
+    }
+
+    .login:hover {
+      color: green;
+    }
+
+    //.login:hover .login-form {
+    //  display: flex;
+    //}
+
+    .active {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__new {

@@ -10,26 +10,29 @@ import {createStore} from '@core/createStore'
 import {rootReducer} from '@/redux/rootReducer'
 import {normalizeInitialState} from '@/redux/initialState'
 import {StateProcessor} from '@core/page/StateProcessor'
-import {LocalStorageClient} from '@/storage/LocalStorageClient'
+import {FireBaseStorageClient} from '@/storage/FireBaseStorageClient'
+import {Auth} from '@core/auth/Auth'
 //
 
 export class ExcelPage extends Page {
   constructor(param) {
     super(param)
-    const tableId = this.params
+    this.user = this.params[1]
+    this.tableId = this.params[2]
 
-    this.storeSub = null
+    this.auth = new Auth()
     this.processor = new StateProcessor(
-      new LocalStorageClient(tableId), 500
-    )
+      // new LocalStorageClient(tableId), 500)
+      new FireBaseStorageClient(this.auth, this.tableId), 1000)
+    this.storeSub = null
   }
 
   async getRoot() {
-    if (this.params && this.params.length > 8) {
-
+    if (this.params) {
       const state = await this.processor.get()
-      const store = createStore(rootReducer, normalizeInitialState(state))
 
+      const store = createStore(rootReducer, normalizeInitialState(state))
+      console.log(state, store)
       this.storeSub = store.subscribe(this.processor.listen)
 
       this.excel = new Excel({
