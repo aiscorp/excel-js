@@ -1,5 +1,8 @@
+/* eslint-disable no-invalid-this */
 import {storage} from '@core/utils'
-import {isEmail} from '@core/auth/auth.functions'
+import {isEmail, isPassword} from '@core/auth/auth.functions'
+import {$} from '@core/dom'
+import {ActiveRoute} from '@core/routes/ActiveRoute'
 
 export function listElement(model, id, user) {
   // NEED TO REFACTOR TO USE StateProcessor
@@ -68,18 +71,13 @@ export function listEmpty() {
 //   `
 // }
 
-function getAllKeysDB(state) {
-  return state ? Object.keys(state) : []
-}
-
 export function createRecordsTable(state, user) {
   const empty = `<ul class="dash-board__list">${listEmpty()}</ul>`
-  const keys = getAllKeysDB(state)
+  const keys = state ? Object.keys(state) : []
   const list = `
     <ul class="dash-board__list">
         ${keys.map(k => listElement(state[k], k, user)).join('')}
-    </ul>  
-  `
+    </ul>`
 
   return `
     <div class="dash-board__table">
@@ -87,43 +85,59 @@ export function createRecordsTable(state, user) {
         <span>Name</span>
         <span>Last date</span>
       </div> 
-       ${keys.length ? list : empty}
+       ${state !== null && user ? list : empty}
     </div>
   `
 }
 
 export function createLogin(auth) {
-  const form = `
-      <div class="login-form">
+  const form = `      
+      <form id="login-form" class="login-form">
           <h3>Please login:</h3>
           <p>Email:</p>
-          <input type="text" class="email"/>
+          <input id="email" type="email" class="email"/>
           <p>Password:</p>
-          <input type="text" class="password"/>
+          <input id="password" type="password" class="password"/>
           <button class="auth" id="login"
             data-action="login">Login</button> 
           <button class="register"
-            data-action="register">Register</button> 
-      </div>`
+            data-action="register">Register</button>       
+    </form>`
 
-  const logoutBtn = `
-      <div class="logout-button" data-action="logout">
+  const infoForm = `
+    <div id="login-form" class="login-form">
+        <button class="logout-button"
+                data-action="logout">
+            <i class="material-icons"
+               data-action="logout">login</i>
+            &nbsp;&nbsp; Logout
+        </button> 
+        <button class="logout-button"
+                data-action="logout">
+            <i class="material-icons"
+               data-action="logout">clear</i>
+            &nbsp;&nbsp; Delete account</button> 
+    </div>`
+
+  const accountBtn = `
+      <div class="account" data-action="account">
           <i class="material-icons"
-              data-action="logout">login</i>
+              data-action="account">account_circle</i>
       </div>`
 
   const login = `
-    <div class="login">
+    <div id="login" class="login">
       <div class="user">
           <p class="user-name">${auth.email}</p>
-          ${logoutBtn}    
+          ${accountBtn}    
       </div>
+      ${infoForm}
     </div>`
 
   const noLogin = `
-    <div class="login">
-      <div class="user">
-          <p class="user-name">Login...</p>      
+    <div id="login" class="login">
+      <div class="user">          
+          ${accountBtn}      
       </div>      
       ${form} 
     </div>`
@@ -131,14 +145,61 @@ export function createLogin(auth) {
   return isEmail(auth.email) ? login : noLogin
 }
 
-export function clickLogin(e) {
-  e.preventDefault()
-  console.log('clickLogin()')
+export async function onLoginFormClick(event) {
+  // event.preventDefault()
+  event.stopPropagation()
+  const $target = $(event.target)
+  const action = $target.data.action
+  console.log($target)
+
+  // LOGIN & Register
+  if (action === 'login' || action === 'register') {
+    const $email = this.$login.find('#email')
+    const $password = this.$login.find('#password')
+
+    if (!isEmail($email.text())) {
+      console.log('Email wrong')
+    } else if (!isPassword($password.text())) {
+      console.log('Password wrong')
+    } else {
+      let result
+      if (action === 'login') {
+        result =
+          await this.auth.authenticate($email.text(), $password.text())
+      } else {
+        result =
+          await this.auth.singUp($email.text(), $password.text())
+      }
+
+      if (result) {
+        window.location.reload()
+        // ActiveRoute.navigate('/#login')
+      } else {
+        console.log('Authenticate error', result)
+      }
+    }
+    console.log($email.text(), $password.text())
+  }
+
+  // LOGOUT
+  if ($target.data.action === 'logout') {
+    await this.auth.logout()
+    window.location.reload()
+    // ActiveRoute.navigate('/#logout')
+  }
+
+  // LOGOUT
+  if ($target.data.action === 'account') {
+    this.$login.find('#login-form')
+      .addClass('active')
+
+    document.addEventListener('click', deleteActive)
+    // ActiveRoute.navigate('/#logout')
+  }
 }
 
-export function clickLogout(e) {
-  e.preventDefault()
-  console.log('clickLogout()')
-  // eslint-disable-next-line no-invalid-this
-  this.logout()
+const deleteActive = (e) => {
+  document.removeEventListener('click', deleteActive)
+  $(document).find('#login-form')
+    .removeClass('active')
 }

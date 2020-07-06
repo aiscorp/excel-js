@@ -38,7 +38,7 @@ export class Router {
     if (ActiveRoute.path.includes('excel')) {
       Page = this.routes.excel
       console.log(ActiveRoute.param)
-      this.page = new Page(ActiveRoute.param[2])
+      this.page = new Page(ActiveRoute.param)
     } else {
       Page = this.routes.dashboard
       this.page = new Page('guest')

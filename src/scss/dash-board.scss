@@ -6,7 +6,7 @@
 
   &__header {
     position: fixed;
-    left: 0;
+        left: 0;
     right: 0;
     top: 0;
     height: $dash-board-header-height;
@@ -18,13 +18,14 @@
     z-index: 1000;
 
 
-    .logout-button {
-      @include button(green, 30px);
-
+    .account {
+      @include button(green, 64px, 10px);
+      color: #3c74ff;
     }
 
     .login-form {
       display: none;
+      flex-direction: column;
       position: absolute;
       width: 200px;
       padding: 8px;
@@ -41,31 +42,44 @@
         margin: 3px;
         padding: 3px;
       }
+
+      button {
+        display: flex;
+        align-items: center;
+
+      }
     }
 
     .login {
       position: absolute;
       display: block;
       right: 0;
-      align-items: center;
+      //align-items: center;
     }
 
     .user {
       display: flex;
+      align-items: center;
     }
 
     .user-name {
       font-size: 16px;
       font-style: italic;
+      color: #30b30d;
       margin: 3px;
       padding: 3px;
+      justify-content: center;
     }
 
     .login:hover {
       color: green;
     }
 
-    .login:hover .login-form {
+    //.login:hover .login-form {
+    //  display: flex;
+    //}
+
+    .active {
       display: flex;
       flex-direction: column;
     }

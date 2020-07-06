@@ -9,13 +9,12 @@ export class Auth {
     this.auth = {
       isAuthenticate: false,
       email: '',
+      user: '',
       idToken: '',
       refreshToken: '',
       expiresIn: ''
     }
-    // try to delete this flags, may be they are extra
     this.ready = false
-    this.isRefresh = false
   }
 
   async singUp(email, password) {
@@ -40,6 +39,7 @@ export class Auth {
           this.auth = {
             isAuthenticate: true,
             email: data.email,
+            user: data.email.split('@')[0],
             idToken: data.idToken,
             refreshToken: data.refreshToken,
             expiresIn: data.expiresIn
@@ -72,6 +72,7 @@ export class Auth {
           this.auth = {
             isAuthenticate: true,
             email: data.email,
+            user: data.email.split('@')[0],
             idToken: data.idToken,
             refreshToken: data.refreshToken,
             expiresIn: data.expiresIn
@@ -104,7 +105,8 @@ export class Auth {
         if (data['id_token']) {
           this.auth = {
             isAuthenticate: true,
-            email: this.auth.email, // ! need to save
+            email: this.auth.email,
+            user: this.auth.email.split('@')[0],
             idToken: data['id_token'],
             refreshToken: data['refresh_token'],
             expiresIn: data['expires_in']
@@ -138,10 +140,11 @@ export class Auth {
       })
   }
 
-  logout(e) {
+  async logout(e) {
     this.auth = {
       isAuthenticate: false
     }
+    this.ready = false
     this.saveAuthToStorage(this.auth)
   }
 
@@ -163,14 +166,27 @@ export class Auth {
     return this.auth.idToken
   }
 
+  async getUser() {
+    if (!await this.authorise()) {
+      return false
+    }
+    return this.auth.user
+  }
+
+  async getEmail() {
+    if (!await this.authorise()) {
+      return false
+    }
+    return this.auth.email
+  }
+
   async loadAuthFromStorage() {
     const storeAuth = storage('auth')
     if (storeAuth !== null) {
       this.auth = storeAuth
-      await this.refreshToken() // refresh for first time
+      await this.refreshToken()
         .then(() => {
           this.refreshTokenInExpires()
-          // refresh every 7min (59min in prod)
         })
     }
   }
@@ -181,17 +197,12 @@ export class Auth {
   }
 
   refreshTokenInExpires() {
-    if (this.isRefresh === true) {
-      return
-    }
     if (this.auth.isAuthenticate === true) {
-      this.isRefresh = true
       setTimeout(() => {
         console.log('refreshTokenInExpires()')
         this.refreshToken()
           .then(() => this.refreshTokenInExpires())
-      }, (this.auth.expiresIn - 60) * 100)
+      }, (this.auth.expiresIn - 60) * 500) // ~29min
     }
-    // for debug = *100, for prod = *1000
   }
 }

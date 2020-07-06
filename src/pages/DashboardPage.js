@@ -1,74 +1,72 @@
 import {Page} from '@core/page/Page'
 import {$} from '@core/dom'
 import {
-  clickLogin, clickLogout,
+  clickLogin,
+  clickLogout,
   createLogin,
-  createRecordsTable
+  createRecordsTable,
+  onLoginFormClick,
+  onLogOutClick
 } from '@/shared/dashboard.functions'
 import {StateProcessor} from '@core/page/StateProcessor'
 import {FireBaseStorageClient} from '@/storage/FireBaseStorageClient'
-import {authFireBase} from '@core/auth/authFireBase'
 import {Auth} from '@core/auth/Auth'
 
 export class DashboardPage extends Page {
   constructor(param) {
     super(param)
-    this.user = this.params || 'guest'
     this.auth = new Auth()
-
     this.processor = new StateProcessor(
-      // new LocalStorageClient(tableId), 500)
-      new FireBaseStorageClient(this.auth), 500)
-
-    this.clickLogout = this.auth.logout.bind(this.auth)
+      new FireBaseStorageClient(this.auth), 1000)
     this.storeSub = null
+    //
+    this.user = ''
+    this.newId = ''
+
+    this.onLoginClick = onLoginFormClick.bind(this)
   }
 
   async getRoot() {
     // get list of tables
     const state = await this.processor.get()
-    console.log(state)
 
-    // await this.auth.authenticate('00aisc@ya.ru', '123456')
-    //   .then(res => console.log(res))
+    this.user = await this.auth.getUser()
+    this.newId = Date.now().toString(16)
 
-    // await authFireBase('aiscorp@yandex.ru', '021263')
-    //   .then(auth => {
-    //     console.log(auth)
-    //     this.auth = auth
-    //   })
+    console.warn('State and auth:', state, this.auth)
 
-    console.log(this.auth)
 
-    const id = Date.now().toString(16)
-    return $.create('div', 'dash-board').html(`
+    const newExcelHref = await this.auth.authorise() ?
+      '#excel/' + this.user + '/' + this.newId : '#'
+
+    this.$root = $.create('div', 'dash-board').html(`
+    <!--HEADER-->
       <div class="dash-board__header">
         <h1>My Excel dash board</h1>        
         ${createLogin(this.auth.auth)} 
       </div>
+    <!--NEW Buttons-->  
       <div class="dash-board__new">
         <div class="dash-board__view">        
-          <a href="#excel/${this.user}/${id}" class="dash-board__create">
+          <a href="${newExcelHref}" 
+             class="dash-board__create">
             New <br/> Table...
           </a>
         </div>  
       </div>
+    <!--RECORDS table-->  
       ${createRecordsTable(state, this.user)}  
     `)
+
+    return this.$root
   }
 
   afterRender() {
-    document
-      .getElementsByClassName('login')[0]
-      .addEventListener('click', this.clickLogout)
-
-
-    return ''
+    this.$login = this.$root.find('#login')
+    this.$login.add('click', this.onLoginClick)
   }
 
   destroy() {
-    document
-      .getElementsByClassName('login')[0]
-      .removeEventListener('click', this.clickLogout)
+    this.$login.delete('click', this.onLoginClick)
   }
 }
