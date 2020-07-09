@@ -43,9 +43,6 @@ export class Router {
       Page = this.routes.dashboard
       this.page = new Page('guest')
     }
-    // const Page = ActiveRoute.path.includes('excel') ?
-    //   this.routes.excel : this.routes.dashboard
-    // this.page = new Page(ActiveRoute.param)
 
     const root = await this.page.getRoot()
 

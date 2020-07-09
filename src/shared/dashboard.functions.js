@@ -1,75 +1,22 @@
 /* eslint-disable no-invalid-this */
-import {storage} from '@core/utils'
 import {isEmail, isPassword} from '@core/auth/auth.functions'
 import {$} from '@core/dom'
-import {ActiveRoute} from '@core/routes/ActiveRoute'
 
 export function listElement(model, id, user) {
-  // NEED TO REFACTOR TO USE StateProcessor
   const date = new Date(model.lastDate)
-
   return `
     <li class="dash-board__record">
       <a href="#excel/${user}/${id}">${model.title}</a>
       <strong>${date.toLocaleString()}</strong>
-    </li>
-  `
+    </li>`
 }
 
 export function listEmpty() {
   return `
     <li class="dash-board__record">        
       <a href="#">No tables created.</a>      
-    </li>
-  `
+    </li>`
 }
-
-// export function listElement(k) {
-//   // NEED TO REFACTOR TO USE StateProcessor
-//   const model = storage(k)
-//   const id = k.split(':')[1]
-//   const date = new Date(model.lastDate)
-//
-//   return `
-//     <li class="dash-board__record">
-//       <a href="#excel/${id}">${model.title}</a>
-//       <strong>${date.toLocaleString()}</strong>
-//     </li>
-//   `
-// }
-
-// function getAllKeys() {
-//   const keys = []
-//   for (let i = 0; i < localStorage.length; i++) {
-//     const key = localStorage.key(i)
-//     if (!key.includes('excel:')) {
-//       continue
-//     }
-//     keys.push(key)
-//   }
-//   return keys
-// }
-
-// export function createRecordsTable(state) {
-//   const empty = `<ul class="dash-board__list">${listEmpty()}</ul>`
-//   const keys = getAllKeysDB(state)
-//
-//   if (!keys.length) {
-//     return empty
-//   }
-//
-//   return `
-//     <div class="dash-board__table">
-//       <div class="dash-board__list-header">
-//         <span>Name</span>
-//         <span>Last date</span>
-//       </div>
-//       <ul class="dash-board__list">
-//         ${keys.map(k => listElement(k)).join('')}
-//       </ul>
-//     </div>
-//   `
-// }
 
 export function createRecordsTable(state, user) {
   const empty = `<ul class="dash-board__list">${listEmpty()}</ul>`
@@ -146,7 +93,6 @@ export function createLogin(auth) {
 }
 
 export async function onLoginFormClick(event) {
-  // event.preventDefault()
   event.stopPropagation()
   const $target = $(event.target)
   const action = $target.data.action
@@ -172,8 +118,10 @@ export async function onLoginFormClick(event) {
       }
 
       if (result) {
+        console.log('Authenticate true', result)
+        // eslint-disable-next-line no-debugger
+        debugger
         window.location.reload()
-        // ActiveRoute.navigate('/#login')
       } else {
         console.log('Authenticate error', result)
       }
@@ -185,7 +133,6 @@ export async function onLoginFormClick(event) {
   if ($target.data.action === 'logout') {
     await this.auth.logout()
     window.location.reload()
-    // ActiveRoute.navigate('/#logout')
   }
 
   // LOGOUT
@@ -194,7 +141,6 @@ export async function onLoginFormClick(event) {
       .addClass('active')
 
     document.addEventListener('click', deleteActive)
-    // ActiveRoute.navigate('/#logout')
   }
 }
 

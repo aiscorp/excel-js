@@ -83,7 +83,5 @@ function createButton(element) {
         </div>`
   const spacer = `<div class="spacer"></div>`
 
-  const html = element.type === 'spacer' ? spacer : button
-
-  return html
+  return element.type === 'spacer' ? spacer : button
 }

@@ -1,12 +1,9 @@
 import {Page} from '@core/page/Page'
 import {$} from '@core/dom'
 import {
-  clickLogin,
-  clickLogout,
   createLogin,
   createRecordsTable,
-  onLoginFormClick,
-  onLogOutClick
+  onLoginFormClick
 } from '@/shared/dashboard.functions'
 import {StateProcessor} from '@core/page/StateProcessor'
 import {FireBaseStorageClient} from '@/storage/FireBaseStorageClient'
@@ -34,7 +31,6 @@ export class DashboardPage extends Page {
     this.newId = Date.now().toString(16)
 
     console.warn('State and auth:', state, this.auth)
-
 
     const newExcelHref = await this.auth.authorise() ?
       '#excel/' + this.user + '/' + this.newId : '#'
