@@ -92,48 +92,37 @@ export function createLogin(auth) {
   return isEmail(auth.email) ? login : noLogin
 }
 
-export async function onLoginFormClick(event) {
+export function onLoginFormClick(event) {
   event.stopPropagation()
   const $target = $(event.target)
   const action = $target.data.action
-  console.log($target)
 
-  // LOGIN & Register
+  // LOGIN & Register click
   if (action === 'login' || action === 'register') {
+
     const $email = this.$login.find('#email')
     const $password = this.$login.find('#password')
 
-    if (!isEmail($email.text())) {
-      console.log('Email wrong')
-    } else if (!isPassword($password.text())) {
-      console.log('Password wrong')
+    let result
+    // Login click()
+    if (action === 'login') {
+      result =
+        this.auth.authenticate($email.text(), $password.text())
+      // Register click()
     } else {
-      let result
-      if (action === 'login') {
-        result =
-          await this.auth.authenticate($email.text(), $password.text())
-      } else {
-        result =
-          await this.auth.singUp($email.text(), $password.text())
-      }
-
-      if (result) {
-        console.log('Authenticate true', result)
-        window.location.reload()
-      } else {
-        console.log('Authenticate error', result)
-      }
+      result =
+        this.auth.singUp($email.text(), $password.text())
     }
-    console.log($email.text(), $password.text())
+
   }
 
-  // LOGOUT
+  // LOGOUT click
   if ($target.data.action === 'logout') {
-    await this.auth.logout()
+    this.auth.logout()
     window.location.reload()
   }
 
-  // LOGOUT
+  // Account form
   if ($target.data.action === 'account') {
     this.$login.find('#login-form')
       .addClass('active')
