@@ -119,8 +119,6 @@ export async function onLoginFormClick(event) {
 
       if (result) {
         console.log('Authenticate true', result)
-        // eslint-disable-next-line no-debugger
-        debugger
         window.location.reload()
       } else {
         console.log('Authenticate error', result)

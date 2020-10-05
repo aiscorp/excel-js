@@ -182,7 +182,7 @@ export class Auth {
 
   async loadAuthFromStorage() {
     const storeAuth = storage('auth')
-    if (storeAuth !== null) {
+    if (storeAuth !== null && storeAuth.isAuthenticate === true) {
       this.auth = storeAuth
       await this.refreshToken()
         .then(() => {
