@@ -65,7 +65,7 @@ export class Auth {
       }
     }
 
-    return await fetch(singInUrl, request)
+    const res = await fetch(singInUrl, request)
       .then(response => response.json())
       .then(data => {
         if (data.idToken) {
@@ -84,6 +84,7 @@ export class Auth {
           true :
           {code: data.error.code, message: data.error.message}
       })
+    return res
   }
 
   async refreshToken() {
@@ -182,7 +183,7 @@ export class Auth {
 
   async loadAuthFromStorage() {
     const storeAuth = storage('auth')
-    if (storeAuth !== null) {
+    if (storeAuth !== null && storeAuth.isAuthenticate === true) {
       this.auth = storeAuth
       await this.refreshToken()
         .then(() => {

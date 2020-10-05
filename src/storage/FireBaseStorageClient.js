@@ -1,10 +1,9 @@
 export class FireBaseStorageClient {
-  constructor(auth, key = '', dbUrl = '') {
+  constructor(auth, key, dbUrl ) {
     this.auth = auth
     this.key = key
     this.name = this.storageName(this.key)
-    this.dbUrl = dbUrl !== '' ?
-      dbUrl : 'https://excel-js-aisc.firebaseio.com/'
+    this.dbUrl = dbUrl ?? 'https://excel-js-aisc.firebaseio.com/'
   }
 
   save(state) {
@@ -51,10 +50,10 @@ export class FireBaseStorageClient {
 
   async storageName(key) {
     const user = await this.auth.getUser()
-    const name = key === '' ?
+    const name = !key ?
       user + '.json' :
       user + '/' + key + '.json'
-    console.log('storageName:', name)
+    console.log(`Key:${key}, User:${user}, storageName:${name}`)
     return name
   }
 

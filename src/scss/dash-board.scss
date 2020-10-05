@@ -2,11 +2,9 @@
 @import "mixins";
 
 .dash-board {
-
-
   &__header {
     position: fixed;
-        left: 0;
+    left: 0;
     right: 0;
     top: 0;
     height: $dash-board-header-height;
@@ -16,7 +14,6 @@
     background: #fff;
     box-shadow: 0 2px 5px 2px rgba(60, 64, 67, 0.15);
     z-index: 1000;
-
 
     .account {
       @include button(green, 64px, 10px);
@@ -46,7 +43,6 @@
       button {
         display: flex;
         align-items: center;
-
       }
     }
 
@@ -54,7 +50,6 @@
       position: absolute;
       display: block;
       right: 0;
-      //align-items: center;
     }
 
     .user {
@@ -74,10 +69,6 @@
     .login:hover {
       color: green;
     }
-
-    //.login:hover .login-form {
-    //  display: flex;
-    //}
 
     .active {
       display: flex;
@@ -165,8 +156,5 @@
         text-decoration: underline;
       }
     }
-
   }
-
-
 }

@@ -1,13 +1,7 @@
 import {Page} from '@core/page/Page'
 import {$} from '@core/dom'
-import {
-  clickLogin,
-  clickLogout,
-  createLogin,
-  createRecordsTable,
-  onLoginFormClick,
-  onLogOutClick
-} from '@/shared/dashboard.functions'
+import {createLogin, createRecordsTable,
+  onLoginFormClick} from '@/shared/dashboard.functions'
 import {StateProcessor} from '@core/page/StateProcessor'
 import {FireBaseStorageClient} from '@/storage/FireBaseStorageClient'
 import {Auth} from '@core/auth/Auth'
@@ -16,27 +10,27 @@ export class DashboardPage extends Page {
   constructor(param) {
     super(param)
     this.auth = new Auth()
-    this.processor = new StateProcessor(
-      new FireBaseStorageClient(this.auth), 1000)
     this.storeSub = null
     //
-    this.user = ''
-    this.newId = ''
-
     this.onLoginClick = onLoginFormClick.bind(this)
   }
 
   async getRoot() {
     // get list of tables
-    const state = await this.processor.get()
+    let state = null
+        const isAuth = await this.auth.authorise()
+
+    if (isAuth) {
+      // User has previous active authorisation in local storage
+      this.processor = new StateProcessor(
+        new FireBaseStorageClient(this.auth), 1000)
+      state = await this.processor.get()
+    }
 
     this.user = await this.auth.getUser()
     this.newId = Date.now().toString(16)
 
-    console.warn('State and auth:', state, this.auth)
-
-
-    const newExcelHref = await this.auth.authorise() ?
+    const newExcelHref = isAuth ?
       '#excel/' + this.user + '/' + this.newId : '#'
 
     this.$root = $.create('div', 'dash-board').html(`

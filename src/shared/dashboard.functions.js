@@ -1,75 +1,22 @@
 /* eslint-disable no-invalid-this */
-import {storage} from '@core/utils'
 import {isEmail, isPassword} from '@core/auth/auth.functions'
 import {$} from '@core/dom'
-import {ActiveRoute} from '@core/routes/ActiveRoute'
 
 export function listElement(model, id, user) {
-  // NEED TO REFACTOR TO USE StateProcessor
   const date = new Date(model.lastDate)
-
   return `
     <li class="dash-board__record">
       <a href="#excel/${user}/${id}">${model.title}</a>
       <strong>${date.toLocaleString()}</strong>
-    </li>
-  `
+    </li>`
 }
 
 export function listEmpty() {
   return `
     <li class="dash-board__record">        
       <a href="#">No tables created.</a>      
-    </li>
-  `
+    </li>`
 }
-
-// export function listElement(k) {
-//   // NEED TO REFACTOR TO USE StateProcessor
-//   const model = storage(k)
-//   const id = k.split(':')[1]
-//   const date = new Date(model.lastDate)
-//
-//   return `
-//     <li class="dash-board__record">
-//       <a href="#excel/${id}">${model.title}</a>
-//       <strong>${date.toLocaleString()}</strong>
-//     </li>
-//   `
-// }
-
-// function getAllKeys() {
-//   const keys = []
-//   for (let i = 0; i < localStorage.length; i++) {
-//     const key = localStorage.key(i)
-//     if (!key.includes('excel:')) {
-//       continue
-//     }
-//     keys.push(key)
-//   }
-//   return keys
-// }
-
-// export function createRecordsTable(state) {
-//   const empty = `<ul class="dash-board__list">${listEmpty()}</ul>`
-//   const keys = getAllKeysDB(state)
-//
-//   if (!keys.length) {
-//     return empty
-//   }
-//
-//   return `
-//     <div class="dash-board__table">
-//       <div class="dash-board__list-header">
-//         <span>Name</span>
-//         <span>Last date</span>
-//       </div>
-//       <ul class="dash-board__list">
-//         ${keys.map(k => listElement(k)).join('')}
-//       </ul>
-//     </div>
-//   `
-// }
 
 export function createRecordsTable(state, user) {
   const empty = `<ul class="dash-board__list">${listEmpty()}</ul>`
@@ -145,56 +92,42 @@ export function createLogin(auth) {
   return isEmail(auth.email) ? login : noLogin
 }
 
-export async function onLoginFormClick(event) {
-  // event.preventDefault()
+export function onLoginFormClick(event) {
   event.stopPropagation()
   const $target = $(event.target)
   const action = $target.data.action
-  console.log($target)
 
-  // LOGIN & Register
+  // LOGIN & Register click
   if (action === 'login' || action === 'register') {
+
     const $email = this.$login.find('#email')
     const $password = this.$login.find('#password')
 
-    if (!isEmail($email.text())) {
-      console.log('Email wrong')
-    } else if (!isPassword($password.text())) {
-      console.log('Password wrong')
+    let result
+    // Login click()
+    if (action === 'login') {
+      result =
+        this.auth.authenticate($email.text(), $password.text())
+      // Register click()
     } else {
-      let result
-      if (action === 'login') {
-        result =
-          await this.auth.authenticate($email.text(), $password.text())
-      } else {
-        result =
-          await this.auth.singUp($email.text(), $password.text())
-      }
-
-      if (result) {
-        window.location.reload()
-        // ActiveRoute.navigate('/#login')
-      } else {
-        console.log('Authenticate error', result)
-      }
+      result =
+        this.auth.singUp($email.text(), $password.text())
     }
-    console.log($email.text(), $password.text())
+
   }
 
-  // LOGOUT
+  // LOGOUT click
   if ($target.data.action === 'logout') {
-    await this.auth.logout()
+    this.auth.logout()
     window.location.reload()
-    // ActiveRoute.navigate('/#logout')
   }
 
-  // LOGOUT
+  // Account form
   if ($target.data.action === 'account') {
     this.$login.find('#login-form')
       .addClass('active')
 
     document.addEventListener('click', deleteActive)
-    // ActiveRoute.navigate('/#logout')
   }
 }
 
