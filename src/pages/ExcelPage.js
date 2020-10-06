@@ -19,20 +19,22 @@ export class ExcelPage extends Page {
     super(param)
     this.user = this.params[1]
     this.tableId = this.params[2]
-
     this.auth = new Auth()
-    this.processor = new StateProcessor(
-      // new LocalStorageClient(tableId), 500)
-      new FireBaseStorageClient(this.auth, this.tableId), 1000)
     this.storeSub = null
   }
 
   async getRoot() {
     if (this.params) {
-      const state = await this.processor.get()
+      const isAuth = await this.auth.authorise()
 
-      const store = createStore(rootReducer, normalizeInitialState(state))
-      console.log(state, store)
+      this.processor = new StateProcessor(
+        new FireBaseStorageClient(this.auth, this.tableId), 1000)
+
+      await this.processor.get()
+        .then(data => this.state = data)
+
+      const store = createStore(rootReducer, normalizeInitialState(this.state))
+      console.log(this.state, store)
       this.storeSub = store.subscribe(this.processor.listen)
 
       this.excel = new Excel({

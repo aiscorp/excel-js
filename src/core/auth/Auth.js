@@ -17,7 +17,7 @@ export class Auth {
     this.ready = false
   }
 
-  async singUp(email, password) {
+  singUp(email, password) {
     const singInUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`
     const request = {
       method: 'POST',
@@ -32,7 +32,7 @@ export class Auth {
       return false
     }
 
-    return await fetch(singInUrl, request)
+    return fetch(singInUrl, request)
       .then(response => response.json())
       .then(data => {
         if (data.idToken) {
@@ -53,10 +53,10 @@ export class Auth {
       })
   }
 
-  async authenticate(email, password) {
+  authenticate(email, password) {
     const singInUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`
     const request = {
-      method: 'POST',
+      method: 'POST', // method: 'POST',
       body: JSON.stringify({
         email, password, returnSecureToken: true
       }),
@@ -65,7 +65,7 @@ export class Auth {
       }
     }
 
-    const res = await fetch(singInUrl, request)
+    const res = fetch(singInUrl, request)
       .then(response => response.json())
       .then(data => {
         if (data.idToken) {
@@ -87,7 +87,7 @@ export class Auth {
     return res
   }
 
-  async refreshToken() {
+  refreshToken() {
     const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`
     const request = {
       method: 'POST',
@@ -100,7 +100,7 @@ export class Auth {
       }
     }
 
-    return await fetch(refreshUrl, request)
+    return fetch(refreshUrl, request)
       .then(response => response.json())
       .then(data => {
         if (data['id_token']) {
@@ -121,7 +121,7 @@ export class Auth {
       })
   }
 
-  async deleteAccount() {
+  deleteAccount() {
     const refreshUrl = `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${API_KEY}`
     const request = {
       method: 'POST',
@@ -133,7 +133,7 @@ export class Auth {
       }
     }
 
-    return await fetch(refreshUrl, request)
+    return fetch(refreshUrl, request)
       .then(response => {
         this.logout()
         console.log('deleteAccount()', response)
@@ -141,7 +141,7 @@ export class Auth {
       })
   }
 
-  async logout(e) {
+  logout(e) {
     this.auth = {
       isAuthenticate: false
     }
@@ -153,29 +153,34 @@ export class Auth {
     if (this.ready === false) {
       await this.loadAuthFromStorage()
         .then(r => {
+          console.log('Auth.authorise(1) this.auth.isAuthenticate:',
+            this.auth.isAuthenticate)
           this.ready = true
-          return this.auth.isAuthenticate
         })
+      return this.auth.isAuthenticate
     }
+    console.log('Auth.authorise(2) this.auth.isAuthenticate:',
+      this.auth.isAuthenticate)
     return this.auth.isAuthenticate
   }
 
-  async getToken() {
-    if (!await this.authorise()) {
+  getToken() {
+    if (!this.authorise()) {
       return false
     }
+    console.log('Auth.getToken() this.auth.idToken:', this.auth.idToken)
     return this.auth.idToken
   }
 
-  async getUser() {
-    if (!await this.authorise()) {
+  getUser() {
+    if (!this.authorise()) {
       return false
     }
     return this.auth.user
   }
 
-  async getEmail() {
-    if (!await this.authorise()) {
+  getEmail() {
+    if (!this.authorise()) {
       return false
     }
     return this.auth.email
@@ -183,12 +188,15 @@ export class Auth {
 
   async loadAuthFromStorage() {
     const storeAuth = storage('auth')
+    console.log(`FAST - 00001`)
     if (storeAuth !== null && storeAuth.isAuthenticate === true) {
       this.auth = storeAuth
       await this.refreshToken()
         .then(() => {
           this.refreshTokenInExpires()
+          console.log(`FAST - 00003`)
         })
+      console.log(`FAST - 00004`)
     }
   }
 
@@ -205,5 +213,6 @@ export class Auth {
           .then(() => this.refreshTokenInExpires())
       }, (this.auth.expiresIn - 60) * 500) // ~29min
     }
+    console.log(`FAST - 00002`)
   }
 }
