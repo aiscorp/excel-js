@@ -1,7 +1,9 @@
 import {Page} from '@core/page/Page'
 import {$} from '@core/dom'
-import {createLogin, createRecordsTable,
-  onLoginFormClick} from '@/shared/dashboard.functions'
+import {
+  createLogin, createRecordsTable,
+  onLoginFormClick
+} from '@/shared/dashboard.functions'
 import {StateProcessor} from '@core/page/StateProcessor'
 import {FireBaseStorageClient} from '@/storage/FireBaseStorageClient'
 import {Auth} from '@core/auth/Auth'
@@ -17,14 +19,15 @@ export class DashboardPage extends Page {
 
   async getRoot() {
     // get list of tables
-    let state = null
-        const isAuth = await this.auth.authorise()
+    const isAuth = await this.auth.authorise()
 
     if (isAuth) {
       // User has previous active authorisation in local storage
       this.processor = new StateProcessor(
         new FireBaseStorageClient(this.auth), 1000)
-      state = await this.processor.get()
+      await this.processor.get()
+        .then(data => this.state = data)
+      console.log('state', this.state)
     }
 
     this.user = await this.auth.getUser()
@@ -49,7 +52,7 @@ export class DashboardPage extends Page {
         </div>  
       </div>
     <!--RECORDS table-->  
-      ${createRecordsTable(state, this.user)}  
+      ${createRecordsTable(this.state, this.user)}  
     `)
 
     return this.$root

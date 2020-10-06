@@ -1,5 +1,5 @@
 export class FireBaseStorageClient {
-  constructor(auth, key, dbUrl ) {
+  constructor(auth, key, dbUrl) {
     this.auth = auth
     this.key = key
     this.name = this.storageName(this.key)
@@ -7,7 +7,7 @@ export class FireBaseStorageClient {
   }
 
   save(state) {
-    this.storage(this.key, state)
+    const r = this.storage(this.key, state)
     return Promise.resolve()
   }
 
@@ -26,15 +26,15 @@ export class FireBaseStorageClient {
     if (!data) {
       // Getter
       const requestUrl =
-        `${this.dbUrl}${await this.storageName(key)}?auth=${await this.token()}`
+        `${this.dbUrl}${this.storageName(key)}?auth=${this.token()}`
+      console.log('async storage() requestUrl:', requestUrl)
       const response = await fetch(requestUrl)
       //
-      console.log('storage.GET', requestUrl, response)
       return response.json()
     }
     // Setter
     const requestUrl =
-      `${this.dbUrl}${await this.storageName(key)}?auth=${await this.token()}`
+      `${this.dbUrl}${this.storageName(key)}?auth=${this.token()}`
     const requestOpt = {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -44,20 +44,17 @@ export class FireBaseStorageClient {
       }
     }
     const response = await fetch(requestUrl, requestOpt)
-    console.log('storage.SET', response)
-    // !? add return for errors
   }
 
-  async storageName(key) {
-    const user = await this.auth.getUser()
+  storageName(key) {
+    const user = this.auth.getUser()
     const name = !key ?
       user + '.json' :
       user + '/' + key + '.json'
-    console.log(`Key:${key}, User:${user}, storageName:${name}`)
     return name
   }
 
-  async token() {
-    return await this.auth.getToken()
+  token() {
+    return this.auth.getToken()
   }
 }

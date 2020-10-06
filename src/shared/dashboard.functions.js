@@ -39,7 +39,7 @@ export function createRecordsTable(state, user) {
 
 export function createLogin(auth) {
   const form = `      
-      <form id="login-form" class="login-form">
+      <div id="login-form" class="login-form">
           <h3>Please login:</h3>
           <p>Email:</p>
           <input id="email" type="email" class="email"/>
@@ -49,7 +49,7 @@ export function createLogin(auth) {
             data-action="login">Login</button> 
           <button class="register"
             data-action="register">Register</button>       
-    </form>`
+    </div>`
 
   const infoForm = `
     <div id="login-form" class="login-form">
@@ -106,12 +106,18 @@ export function onLoginFormClick(event) {
     let result
     // Login click()
     if (action === 'login') {
-      result =
+      // result =
         this.auth.authenticate($email.text(), $password.text())
+          .then(result => {
+            console.log(result)
+            window.location.reload()
+          })
+
       // Register click()
     } else {
       result =
         this.auth.singUp($email.text(), $password.text())
+      window.location.reload()
     }
 
   }
