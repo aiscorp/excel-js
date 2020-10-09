@@ -20,6 +20,7 @@ export class Formula extends ExcelComponent {
 
     this.$on('table:textChange', $cell => {
       this.$formula.text($cell.data.value)
+      // console.log('FORMULA: table:textChange: ', $cell)
       // this.$formula.text(text)
     })
   }

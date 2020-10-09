@@ -13,6 +13,7 @@ export function rootReducer(state, action) {
       return {...state, [field]: value(state, field, id, action)}
 
     case types.TABLE_TEXT_CHANGE:
+      console.log(`Action: ${JSON.stringify(action)}`) // log
       id = action.data.id.row + ':' + action.data.id.col
       field = 'cellState'
       return {
