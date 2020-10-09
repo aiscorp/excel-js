@@ -42,6 +42,7 @@ export class Table extends ExcelComponent {
 
     // formula input
     this.$on('formula:input', input => {
+      console.log('TABLE: formula:input: ', input)
       // parse formulas
       this.selection.current
         .attr('data-value', input)
@@ -50,6 +51,7 @@ export class Table extends ExcelComponent {
     })
 
     this.$on('formula:done', key => {
+      console.log('TABLE: formula:done: ', key)
       const $nextCell = findByCoords(this.$root,
         nextSelector(key, this.selection.current.id()))
       this.selectCell($nextCell)
@@ -57,6 +59,7 @@ export class Table extends ExcelComponent {
     })
 
     this.$on('toolbar:stateChange', state => {
+      console.log('TABLE: toolbar:stateChange: ', state)
       this.selection.applyStyles(stateToStyle(state))
       // ???
       this.$dispatch(actions.tableStyleChange(state))
@@ -83,8 +86,6 @@ export class Table extends ExcelComponent {
       // Selection cells
     } else if (isCellClick(event)) {
       selectHandler(this.$root, event, this.selection)
-      // !!!!!!!!!!  selectCell($cell) ISN'T WORKING HEAR - NEED TO CORRECT
-      // this.$emit('table:textChange', this.selection.current.text())
       this.$emit('table:textChange', this.selection.current)
       //
       const state = styleToState(this.selection.current
@@ -96,7 +97,6 @@ export class Table extends ExcelComponent {
   }
 
   onDblclick(event) {
-    // console.log('Double!')
     const $cell = $(event.target)
 
     $cell.attr('contenteditable') === 'true' ?
@@ -129,7 +129,6 @@ export class Table extends ExcelComponent {
    * ---- onKeyDown -----
    * */
   onInput(event) {
-    // this.$emit('table:textChange', this.selection.current.text())
     this.updateCellInStore()
   }
 
@@ -139,8 +138,7 @@ export class Table extends ExcelComponent {
   updateCellInStore() {
     this.$dispatch(actions.tableTextChange({
       id: this.selection.current.id(),
-      value: this.selection.current.attr('data-value')
-      // value: this.selection.current.text()
+      value: this.selection.current.text()
     }))
   }
 

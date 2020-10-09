@@ -46,7 +46,6 @@ export class Auth {
           }
         }
         this.saveAuthToStorage(this.auth)
-        // console.log('singUp()', data)
         return data.idToken ?
           true :
           {code: data.error.code, message: data.error.message}
@@ -79,7 +78,6 @@ export class Auth {
           }
         }
         this.saveAuthToStorage(this.auth)
-        console.log('authenticate', data)
         return data.idToken ?
           true :
           {code: data.error.code, message: data.error.message}
@@ -114,7 +112,6 @@ export class Auth {
           }
         }
         this.saveAuthToStorage(this.auth)
-        console.log('refreshToken(this.auth)', data)
         return data['id_token'] ?
           true :
           {code: data.error.code, message: data.error.message}
@@ -136,7 +133,6 @@ export class Auth {
     return fetch(refreshUrl, request)
       .then(response => {
         this.logout()
-        console.log('deleteAccount()', response)
         return response.ok
       })
   }
@@ -153,14 +149,10 @@ export class Auth {
     if (this.ready === false) {
       await this.loadAuthFromStorage()
         .then(r => {
-          console.log('Auth.authorise(1) this.auth.isAuthenticate:',
-            this.auth.isAuthenticate)
           this.ready = true
         })
       return this.auth.isAuthenticate
     }
-    console.log('Auth.authorise(2) this.auth.isAuthenticate:',
-      this.auth.isAuthenticate)
     return this.auth.isAuthenticate
   }
 
@@ -168,7 +160,6 @@ export class Auth {
     if (!this.authorise()) {
       return false
     }
-    console.log('Auth.getToken() this.auth.idToken:', this.auth.idToken)
     return this.auth.idToken
   }
 
@@ -188,15 +179,12 @@ export class Auth {
 
   async loadAuthFromStorage() {
     const storeAuth = storage('auth')
-    console.log(`FAST - 00001`)
     if (storeAuth !== null && storeAuth.isAuthenticate === true) {
       this.auth = storeAuth
       await this.refreshToken()
         .then(() => {
           this.refreshTokenInExpires()
-          console.log(`FAST - 00003`)
         })
-      console.log(`FAST - 00004`)
     }
   }
 
@@ -208,11 +196,9 @@ export class Auth {
   refreshTokenInExpires() {
     if (this.auth.isAuthenticate === true) {
       setTimeout(() => {
-        console.log('refreshTokenInExpires()')
         this.refreshToken()
           .then(() => this.refreshTokenInExpires())
       }, (this.auth.expiresIn - 60) * 500) // ~29min
     }
-    console.log(`FAST - 00002`)
   }
 }
