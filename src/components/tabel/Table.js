@@ -44,10 +44,9 @@ export class Table extends ExcelComponent {
     this.$on('formula:input', input => {
       console.log('TABLE: formula:input: ', input)
       // parse formulas
-      this.selection.current
-        .attr('data-value', input)
-        .text(parse(input))
-      this.updateCellInStore()
+      this.selection.current.attr('data-value', input)
+      this.selection.current.text(parse(input))
+      this.updateCellInStore(input)
     })
 
     this.$on('formula:done', key => {
@@ -55,7 +54,7 @@ export class Table extends ExcelComponent {
       const $nextCell = findByCoords(this.$root,
         nextSelector(key, this.selection.current.id()))
       this.selectCell($nextCell)
-      this.updateCellInStore()
+      // this.updateCellInStore()
     })
 
     this.$on('toolbar:stateChange', state => {
@@ -92,7 +91,7 @@ export class Table extends ExcelComponent {
         .getStyles(Object.keys(defaultStyles)))
       this.$dispatch(actions.tableStyleChange(state))
       //
-      this.updateCellInStore()
+      // this.updateCellInStore($(event.target).text())
     }
   }
 
@@ -122,23 +121,23 @@ export class Table extends ExcelComponent {
         nextSelector(key, this.selection.current.id()))
       this.selectCell($nextCell)
     }
-    this.updateCellInStore()
+    // this.updateCellInStore($(event.target).text())
   }
 
   /* EVENT
    * ---- onKeyDown -----
    * */
   onInput(event) {
-    this.updateCellInStore()
+    this.updateCellInStore($(event.target).text())
   }
 
   /*
    * functions helpers
    */
-  updateCellInStore() {
+  updateCellInStore(value) {
     this.$dispatch(actions.tableTextChange({
       id: this.selection.current.id(),
-      value: this.selection.current.text()
+      value // : this.selection.current.text()
     }))
   }
 

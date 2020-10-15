@@ -7,7 +7,7 @@ export function parse(value = '') {
       return eval(formula)
     } catch (e) {
       console.warn(`Formula ${formula} cannot be calculated`)
-      return 'Err: '+formula
+      return value // 'Err: '+formula
     }
   }
   return value
